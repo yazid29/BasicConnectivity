@@ -18,13 +18,13 @@ namespace BasicConnectivity
         {
 
             ConnectDB();
-            InsertRegion("Australia");
-            //GetRegionById(21);
-            //UpdateRegion(21, "Australia Oceania");
-            //DeleteRegion(21);
-            GetAllRegions();
+            //InsertRegion("Australia");
+            UpdateRegion(24, "Australia Oceania");
+            GetRegionById(24);
+            //GetAllRegions();
+            //DeleteRegion(20)
         }
-        // Method connectDB untuk mengecek koneksi ke database apakah berhasil atau tidak;
+        // Fungsi connectDB untuk mengecek koneksi ke database apakah berhasil atau tidak;
         public static void ConnectDB()
         {
             // declarasi database
