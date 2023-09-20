@@ -61,7 +61,7 @@ namespace BasicConnectivity
 
         // INSERT: Country
         // masukan data ke dalam tabel Country
-        public string Insert(string name)
+        public string Insert(string id,string name,int regionid)
         {
             // declarasi database
             DBconnection database = new DBconnection();
@@ -69,11 +69,13 @@ namespace BasicConnectivity
             using var command = new SqlCommand();
             var connection = database.getDB();
             command.Connection = connection;
-            command.CommandText = "INSERT INTO countris VALUES (@name);";
+            command.CommandText = "INSERT INTO countries VALUES (@id,@name,@regionid);";
 
             try
             {
+                command.Parameters.Add(new SqlParameter("@id", id));
                 command.Parameters.Add(new SqlParameter("@name", name));
+                command.Parameters.Add(new SqlParameter("@regionid", regionid));
 
                 database.ConnectDB();
                 using var transaction = connection.BeginTransaction();
@@ -85,11 +87,13 @@ namespace BasicConnectivity
 
                     transaction.Commit();
                     database.CloseDB();
+                    Console.WriteLine("sukses");
                     return result.ToString();
                 }
                 catch (Exception ex)
                 {
                     transaction.Rollback();
+                    Console.WriteLine("gagal");
                     return $"Error Transaction: {ex.Message}";
                 }
             }
@@ -100,7 +104,7 @@ namespace BasicConnectivity
         }
         // GET BY ID: Country
         // menampilkan data sesuai dengan id yang di inginkan
-        public Country GetById(char id)
+        public Country GetById(string id)
         {
             // declarasi database
             DBconnection database = new DBconnection();
@@ -109,7 +113,7 @@ namespace BasicConnectivity
             var connection = database.getDB();
             command.Connection = connection;
             // query select semua columns atau atribut sesuai id yang diinginkan
-            command.CommandText = "SELECT * FROM countries WHERE id=" + id;
+            command.CommandText = $"SELECT * FROM countries WHERE id='{id}'";
 
             try
             {
@@ -139,7 +143,7 @@ namespace BasicConnectivity
             return new Country();
         }
         // UPDATE: Country
-        public string Update(int id, string name)
+        public string Update(string id, string name)
         {
             // declarasi database
             DBconnection database = new DBconnection();
@@ -148,7 +152,7 @@ namespace BasicConnectivity
             var connection = database.getDB();
             command.Connection = connection;
             // query update columns atau atribut nama Country sesuai id yang diinginkan
-            command.CommandText = "UPDATE countries SET name = @name WHERE id = @id;";
+            command.CommandText = "update countries set name = @name where id=@id";
 
             try
             {
@@ -164,7 +168,7 @@ namespace BasicConnectivity
                 var pId = new SqlParameter();
                 pId.ParameterName = "@id";
                 pId.Value = id;
-                pId.SqlDbType = SqlDbType.Int;
+                pId.SqlDbType = SqlDbType.Char;
                 command.Parameters.Add(pId);
 
                 // hubungkan database
@@ -175,7 +179,8 @@ namespace BasicConnectivity
                 try
                 {
                     // jalankan query
-                    command.Transaction = transaction;
+                    var a = command.Transaction = transaction;
+                    Console.WriteLine(a);
                     var result = command.ExecuteNonQuery();
                     transaction.Commit();
                     // tutup semua koneksi database
@@ -201,7 +206,7 @@ namespace BasicConnectivity
             }
         }
         // DELETE: Country
-        public string Delete(int id)
+        public string Delete(string id)
         {
             // declarasi database
             DBconnection database = new DBconnection();
@@ -210,7 +215,7 @@ namespace BasicConnectivity
             var connection = database.getDB();
             command.Connection = connection;
             // query delete dari tabelcountry sesuai ID
-            command.CommandText = "DELETE FROM countries WHERE id = " + id;
+            command.CommandText = $"DELETE FROM countries WHERE id = '{id}'";
 
             try
             {

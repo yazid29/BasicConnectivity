@@ -17,7 +17,7 @@ namespace BasicConnectivity
             //database.ConnectDB();
             //database.CloseDB();
             var history = new History();
-            gethistory(history);
+            //gethistory(history);
             var employee = new Employee();
             //getemployee(employee);
             var job=new Job();
@@ -29,14 +29,23 @@ namespace BasicConnectivity
             //getDepartments(department);
 
             var country = new Country();
-            //getCountry(country);
+            
             //GetById Region : ambil data sesuai id
-            /*
-            var getIdcountry = country.GetById(Convert.ToChar("ar"));
+            
+            var getIdcountry = country.GetById("id");
             Console.WriteLine("Diperoleh :");
             Console.WriteLine($"ID : {getIdcountry.Id}");
             Console.WriteLine($"Nama Region : {getIdcountry.Name}");
-            */
+
+            //panggil method update untuk memperbarui data
+            //var updateId = country.Update("vi", "Vietnam");
+            //Console.WriteLine(updateId);
+            //var insertcountry = country.Insert("br","Brunei",3);
+            //Console.WriteLine(insertcountry);
+            var delId = country.Delete("es");
+            Console.WriteLine(delId);
+
+            getCountry(country);
             var region = new Region();
             /*
             // GetAll Region : tampilkan semua region
@@ -44,10 +53,8 @@ namespace BasicConnectivity
             // Insert Region : masukan data region
             
             var insertRegion = region.Insert("Jawa Timur");
-            if(insertRegion != null)
-            {
-                Console.WriteLine("Sukses Insert");
-            }
+            Console.WriteLine("Sukses Insert");
+            
             //GetById Region : ambil data sesuai id
             var getId = region.GetById(29);
             Console.WriteLine("Diperoleh :");
