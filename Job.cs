@@ -9,6 +9,7 @@ namespace BasicConnectivity
 {
     internal class Job
     {
+        // id (string) title (string) min_salary max_salary (int)
         public string Id { get; set; }
         public string title { get; set; }
         public int min_salary { get; set; }
