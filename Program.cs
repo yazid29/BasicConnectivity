@@ -87,6 +87,7 @@ namespace BasicConnectivity
                     //var insertlocation = location.Insert(11,"Tambak wedi", "60126", "Surabaya", "JawaTimur", "id");
                     //Console.WriteLine(insertlocation);
                     //getlocation(location);
+
                     //var updateId = location.Update(1, "Tenggumung","60153");
                     //Console.WriteLine(updateId);
 
@@ -94,6 +95,7 @@ namespace BasicConnectivity
                     Console.WriteLine("Diperoleh");
                     Console.WriteLine($"ID : {getIdloc.Id}");
                     Console.WriteLine($"Nama Lokasi : {getIdloc.street_address}");
+
                     var delId = location.Delete(6);
                     Console.WriteLine(delId);
                     getlocation(location);
@@ -101,22 +103,80 @@ namespace BasicConnectivity
                 case "4":
                     Console.WriteLine("Data Job");
                     var job = new Job();
-                    getJobs(job);
+
+                    //var insertJob = job.Insert("ce", "CEO", 5000, 8000);
+                    //Console.WriteLine(insertJob);
+                    var updateJob = job.Update("ce", "CEO A");
+                    Console.WriteLine(updateJob);
+
+                    var getjob = job.GetById("ce");
+                    Console.WriteLine("Diperoleh");
+                    Console.WriteLine($"ID : {getjob.Id}");
+                    Console.WriteLine($"Nama Lokasi : {getjob.title}");
+                    //getJobs(job);
+                    //var deljob = job.Delete("ce");
+                    //Console.WriteLine(deljob);
+
+
                     break;
                 case "5":
                     Console.WriteLine("Data Department");
                     var department = new Departments();
-                    getDepartments(department);
+
+                    //var insertDe = department.Insert(13, "Trainer 2", 10,3);
+                    //Console.WriteLine(insertDe);
+
+                    //getDepartments(department);
+                    //var updatedep = department.Update(12, "Trainer");
+                    //Console.WriteLine(updatedep);
+                    //getDepartments(department);
+                    var getdep = department.GetById(13);
+                    Console.WriteLine("Diperoleh");
+                    Console.WriteLine($"ID : {getdep.Id}");
+                    Console.WriteLine($"Nama Lokasi : {getdep.Name}");
+                    //var deldepp = department.Delete(13);
+                    //Console.WriteLine(deldepp);
+
                     break;
                 case "6":
                     Console.WriteLine("Data Employee");
                     var employee = new Employee();
-                    getemployee(employee);
+
+                    //var insertEm = employee.Insert(31, "Moh", "Irfaan", "mohi@gmail.com", "082255556641", new DateTime(2023, 09, 20), 2000000, 3000.0,1);
+                    //Console.WriteLine(insertEm);
+
+                    //getDepartments(department);
+                    var updatedem = employee.Update(28, "Abang");
+                    Console.WriteLine(updatedem);
+                    //getemployee(employee);
+                    var getdemp = employee.GetById(28);
+                    Console.WriteLine("Diperoleh");
+                    Console.WriteLine($"ID : {getdemp.Id}");
+                    Console.WriteLine($"Nama Lokasi : {getdemp.first_name}");
+                    //var delemp = employee.Delete(28);
+                    //Console.WriteLine(delemp);
                     break;
                 case "7":
                     Console.WriteLine("Data History");
                     var history = new History();
-                    gethistory(history);
+                    //var insertHis = history.Insert(new DateTime(2023, 09, 20), 3, new DateTime(2023, 09, 22), 3, "be");
+                    //Console.WriteLine(insertHis);
+                    var getdhisdate = history.GetById(new DateTime(2023, 09, 13), 2);
+                    Console.WriteLine("Diperoleh");
+                    Console.WriteLine($"StartDate : {getdhisdate.start_date}");
+                    Console.WriteLine($"Id : {getdhisdate.department_id}");
+
+                    var updatedHist = history.Update(new DateTime(2023, 09, 13), 2,4);
+                    Console.WriteLine(updatedHist);
+
+                    var getdhisdate2 = history.GetById(new DateTime(2023, 09, 13), 2);
+                    Console.WriteLine("Diperoleh");
+                    Console.WriteLine($"StartDate : {getdhisdate2.start_date}");
+                    Console.WriteLine($"Id : {getdhisdate2.department_id}");
+
+                    //var delemp = history.Delete(new DateTime(2023, 09, 20), 3);
+                    //Console.WriteLine(delemp);
+                    //gethistory(history);
                     break;
                 case "8":
                     return false;
