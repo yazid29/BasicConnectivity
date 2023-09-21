@@ -47,6 +47,7 @@ namespace BasicConnectivity
                             postal_code = reader.GetString(2),
                             city = reader.GetString(3),
                             stat_province = reader.GetString(4),
+                            country_id = reader.GetString(5)
                         });
                     }
                     reader.Close();

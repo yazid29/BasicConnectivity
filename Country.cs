@@ -12,6 +12,7 @@ namespace BasicConnectivity
     {
         public string Id { get; set; }
         public string Name { get; set; }
+        public int Region_id { get; set; }
         // deklarasi untuk koneksi database
         DBconnection database = new DBconnection();
 
@@ -38,7 +39,8 @@ namespace BasicConnectivity
                         country.Add(new Country
                         {
                             Id = reader.GetString(0),
-                            Name = reader.GetString(1)
+                            Name = reader.GetString(1),
+                            Region_id= reader.GetInt32(2)
                         });
                     }
                     reader.Close();

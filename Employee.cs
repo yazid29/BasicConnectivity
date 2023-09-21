@@ -16,13 +16,16 @@ namespace BasicConnectivity
         public string phone_number { get; set; }
         public DateTime hire_date { get; set; }
         public int salary { get; set; }
-        public Double commision_pct { get; set; }
+        public Decimal commision_pct { get; set; }
+        public int manager_id { get; set; }
+        public string job_id { get; set; }
+        public int department_id { get; set; }
         // deklarasi untuk koneksi database
         DBconnection database = new DBconnection();
         public List<Employee> GetAll()
         {
             //declarasi sebuah daftar dataJob, dan SqlCommand untuk menampung daftar query
-            var job = new List<Employee>();
+            var Employee = new List<Employee>();
             using var command = new SqlCommand();
 
             command.Connection = database.getDB();
@@ -38,19 +41,25 @@ namespace BasicConnectivity
                 {
                     while (reader.Read())
                     {
-                        job.Add(new Employee
+                        Employee.Add(new Employee
                         {
                             Id = reader.GetInt32(0),
                             first_name = reader.GetString(1),
                             last_name = reader.GetString(2),
                             email = reader.GetString(3),
                             phone_number = reader.GetString(4),
+                            hire_date = reader.GetDateTime(5),
+                            salary = reader.GetInt32(6),
+                            commision_pct = reader.GetDecimal(7),
+                            //manager_id = reader.GetInt32(8),
+                            job_id = reader.GetString(9),
+                            department_id = reader.GetInt32(10)
                         });
                     }
                     reader.Close();
                     database.CloseDB();
 
-                    return job;
+                    return Employee;
                 }
                 reader.Close();
                 database.CloseDB();
@@ -91,6 +100,15 @@ namespace BasicConnectivity
                         datae.Id = reader.GetInt32(0);
                         datae.first_name = reader.GetString(1);
                         datae.last_name = reader.GetString(2);
+                        datae.email = reader.GetString(3);
+                        datae.phone_number = reader.GetString(4);
+                        datae.hire_date = reader.GetDateTime(5);
+                        datae.salary = reader.GetInt32(6);
+                        datae.commision_pct = reader.GetDecimal(7);
+                        datae.manager_id = reader.GetInt32(8);
+                        datae.job_id = reader.GetString(9);
+                        datae.department_id = reader.GetInt32(10);
+                        
                     }
                 }
                 // tutup semua koneksi database

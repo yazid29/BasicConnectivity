@@ -3,7 +3,10 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Net.Configuration;
+using System.Security.Cryptography;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
@@ -23,7 +26,9 @@ namespace BasicConnectivity
                 Console.WriteLine("5. Data Department");
                 Console.WriteLine("6. Data Employee");
                 Console.WriteLine("7. Data History");
-                Console.WriteLine("8. Exit");
+                Console.WriteLine("8. Data Lengkap Employee dengan Join Table");
+                Console.WriteLine("9. Beberapa detail");
+                Console.WriteLine("99. Exit");
                 Console.Write("Enter your choice: ");
                 var input = Console.ReadLine();
                 choice = Menu(input);
@@ -141,7 +146,7 @@ namespace BasicConnectivity
                 case "6":
                     Console.WriteLine("Data Employee");
                     var employee = new Employee();
-
+                    getemployee(employee);
                     //var insertEm = employee.Insert(31, "Moh", "Irfaan", "mohi@gmail.com", "082255556641", new DateTime(2023, 09, 20), 2000000, 3000.0,1);
                     //Console.WriteLine(insertEm);
 
@@ -151,8 +156,13 @@ namespace BasicConnectivity
                     //getemployee(employee);
                     var getdemp = employee.GetById(28);
                     Console.WriteLine("Diperoleh");
-                    Console.WriteLine($"ID : {getdemp.Id}");
+                    //Console.WriteLine($"ID : {getdemp.department_id}");
                     Console.WriteLine($"Nama Lokasi : {getdemp.first_name}");
+                    Console.WriteLine($"phone_number : {getdemp.phone_number}");
+                    Console.WriteLine($"hire_date : {getdemp.hire_date}");
+                    Console.WriteLine($"salary : {getdemp.salary}");
+                    Console.WriteLine($"commision_pct : {getdemp.commision_pct}");
+                    
                     //var delemp = employee.Delete(28);
                     //Console.WriteLine(delemp);
                     break;
@@ -179,6 +189,78 @@ namespace BasicConnectivity
                     //gethistory(history);
                     break;
                 case "8":
+                    
+                    var department3 = new Departments();
+                    var country3 = new Country();
+                    var region3 = new Region();
+                    var location3 = new Location();
+                    var employee3 = new Employee();
+
+                    var getdepartment1 = department3.GetAll();
+                    var getRegion1 = region3.GetAll();
+                    var getLocation1 = location3.GetAll();
+                    var getCountry1 = country3.GetAll();
+
+                    var employee1 = employee3.GetAll();
+                    
+                    
+                    var resultJoin = (from r in getRegion1
+                                      join c in getCountry1 on r.Id equals c.Region_id
+                                      join l in getLocation1 on c.Id equals l.country_id
+                                      join d in getdepartment1 on l.Id equals d.location_id
+                                      join emp in employee1 on d.Id equals emp.department_id
+                                      select new 
+                                      //select new
+                                      {
+                                          id_emp = emp.Id,
+                                          id_fullname = emp.first_name+" "+emp.last_name,
+                                          id_email = emp.email,
+                                          id_phone=emp.phone_number,
+                                          id_salary=emp.salary,
+                                          departments_name = d.Name,
+                                          departments_address = l.street_address,
+                                          depart_country_name = c.Name,
+                                          depart_region_name = r.Name,
+                                          department_name = d.Name
+                                      }).ToList();
+                    
+                    foreach (var item in resultJoin)
+                    {
+                        Console.WriteLine($"{item.id_emp} - {item.id_fullname} - {item.id_email} - {item.id_phone} - {item.id_salary} - " +
+                            $"{item.departments_address} - {item.depart_country_name} - {item.depart_region_name}");
+                    }
+
+                    break;
+                case "9":
+                    var department4 = new Departments();
+                    var getdepartment2 = department4.GetAll();
+                    var employee4 = new Employee();
+                    var getemployee4 = employee4.GetAll();
+                    var job4 = new Job();
+                    var getjob4 = job4.GetAll();
+                    //department_name, total_employee, min_salary, max_salary, average_salary
+                    var resultJoin2 = (from j in getjob4
+                                       join emp2 in getemployee4 on j.Id equals emp2.job_id
+                                       join deps in getdepartment2 on emp2.department_id equals deps.Id
+                                       group emp2 by deps.Name into gp
+                                       select new
+                                       {
+                                           name = gp.Key,
+                                           total_employee= gp.Count(),
+                                           min_salary = gp.Min(salaryEmp => salaryEmp.salary),
+                                           max_salary = gp.Max(salaryEmp => salaryEmp.salary),
+                                           average_salary = gp.Average(salaryEmp => salaryEmp.salary),
+                                       })
+                                       .ToList();
+                    
+                    foreach (var item in resultJoin2)
+                    {
+                        Console.WriteLine($"Nama Departmen: {item.name}");
+                        Console.WriteLine($"Jumlah:{item.total_employee}");
+                        Console.WriteLine($"min_salary: {item.min_salary},max_salary: {item.max_salary},rata-rata: {item.average_salary}");
+                    }
+                    break;
+                case "99":
                     return false;
                 default:
                     Console.WriteLine("Invalid choice");
@@ -275,6 +357,7 @@ namespace BasicConnectivity
                     Console.WriteLine($"Id: {data.Id}, First_name: {data.first_name}," +
                         $" last name: {data.last_name}, email: {data.email}" +
                         $" phone: {data.phone_number}");
+                    Console.WriteLine($"hire_date: {data.hire_date}-{data.salary}-{data.job_id}-{data.department_id}");
                     ///$"phone: {data.phone_number},hire_date: {data.hire_date},salary: {data.salary}");
                 }
             }
