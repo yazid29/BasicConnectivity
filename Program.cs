@@ -255,9 +255,11 @@ namespace BasicConnectivity
                     
                     foreach (var item in resultJoin2)
                     {
-                        Console.WriteLine($"Nama Departmen: {item.name}");
-                        Console.WriteLine($"Jumlah:{item.total_employee}");
-                        Console.WriteLine($"min_salary: {item.min_salary},max_salary: {item.max_salary},rata-rata: {item.average_salary}");
+                        if (item.total_employee > 3) { 
+                            Console.WriteLine($"Nama Departmen: {item.name}");
+                            Console.WriteLine($"Jumlah:{item.total_employee}");
+                            Console.WriteLine($"min_salary: {item.min_salary},max_salary: {item.max_salary},rata-rata: {item.average_salary}");
+                        }
                     }
                     break;
                 case "99":
