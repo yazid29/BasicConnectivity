@@ -8,5 +8,11 @@ namespace BasicConnectivity.ViewModels
 {
     internal class LocationView : GeneralView
     {
+        public string InputId()
+        {
+            Console.Write("Input ID:");
+            var id = Console.ReadLine();
+            return id;
+        }
     }
 }

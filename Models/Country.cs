@@ -21,7 +21,6 @@ namespace BasicConnectivity
         {
             //declarasi sebuah daftar datacountry, dan SqlCommand untuk menampung daftar query
             var country = new List<Country>();
-            var regions = new List<Region>();
             // deklarasi untuk koneksi database
             using var connectDB = DBconnection.GetDBConnection();
             using var command = DBconnection.GetDBCommand();
@@ -70,7 +69,6 @@ namespace BasicConnectivity
         {
             //declarasi sebuah daftar datacountry, dan SqlCommand untuk menampung daftar query
             var country = new List<Country>();
-            var regions = new List<Region>();
             // deklarasi untuk koneksi database
             using var connectDB = DBconnection.GetDBConnection();
             using var command = DBconnection.GetDBCommand();
@@ -115,7 +113,6 @@ namespace BasicConnectivity
         {
             //declarasi sebuah daftar datacountry, dan SqlCommand untuk menampung daftar query
             var country = new List<Country>();
-            var regions = new List<Region>();
             // deklarasi untuk koneksi database
             using var connectDB = DBconnection.GetDBConnection();
             using var command = DBconnection.GetDBCommand();
@@ -157,7 +154,6 @@ namespace BasicConnectivity
         {
             //declarasi sebuah daftar datacountry, dan SqlCommand untuk menampung daftar query
             var country = new List<Country>();
-            var regions = new List<Region>();
             // deklarasi untuk koneksi database
             using var connectDB = DBconnection.GetDBConnection();
             using var command = DBconnection.GetDBCommand();
@@ -222,7 +218,6 @@ namespace BasicConnectivity
         {
             //declarasi sebuah daftar datacountry, dan SqlCommand untuk menampung daftar query
             var country = new List<Country>();
-            var regions = new List<Region>();
             // deklarasi untuk koneksi database
             using var connectDB = DBconnection.GetDBConnection();
             using var command = DBconnection.GetDBCommand();

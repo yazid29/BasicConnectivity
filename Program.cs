@@ -124,6 +124,51 @@ namespace BasicConnectivity
                 }
             }
         }
+        public static void LocationMenu()
+        {
+            var location = new Location();
+            var locationView = new LocationView();
+
+            var locationController = new LocationController(location, locationView);
+
+            var isLoop = true;
+            while (isLoop)
+            {
+                Console.WriteLine("1. List all Location");
+                Console.WriteLine("2. Get data Location");
+                //Console.WriteLine("3. Insert new Country");
+                //Console.WriteLine("4. Update Country");
+                Console.WriteLine("5. Delete Country");
+                Console.WriteLine("0. Back");
+                Console.Write("Enter your choice: ");
+                var input2 = Console.ReadLine();
+                switch (input2)
+                {
+                    case "0":
+                        isLoop = false;
+                        break;
+                    case "1":
+                        locationController.GetAllData();
+                        break;
+                    case "2":
+                        locationController.GetDataId();
+                        break;
+                    case "3":
+                        //locationController.InsertData();
+                        break;
+                    case "4":
+                        //locationController.UpdateData();
+                        break;
+                        
+                    case "5":
+                        //locationController.DeleteData();
+                        break;
+                    default:
+                        Console.WriteLine("Invalid choice");
+                        break;
+                }
+            }
+        }
         public static bool Menu(string input)
         {
             switch (input)
@@ -133,43 +178,9 @@ namespace BasicConnectivity
                     break;
                 case "2":
                     CountryMenu();
-                    Console.WriteLine("Data Countries");
-                    var country = new Country();
-                    //getCountry(country);
-                    //GetById Region : ambil data sesuai id
-
-                    var getIdcountry = country.GetById("id");
-                    Console.WriteLine("Diperoleh :");
-                    Console.WriteLine($"ID : {getIdcountry.Id}");
-                    Console.WriteLine($"Nama Region : {getIdcountry.Name}");
-                    /*
-                    //panggil method update untuk memperbarui data
-                    //var updateId = country.Update("vi", "Vietnam");
-                    //Console.WriteLine(updateId);
-                    //var insertcountry = country.Insert("br","Brunei",3);
-                    //Console.WriteLine(insertcountry);
-                    var delId = country.Delete("es");
-                    Console.WriteLine(delId);
-                    */
                     break;
                 case "3":
-                    Console.WriteLine("Data Location");
-                    var location = new Location();
-                    //var insertlocation = location.Insert(11,"Tambak wedi", "60126", "Surabaya", "JawaTimur", "id");
-                    //Console.WriteLine(insertlocation);
-                    //getlocation(location);
-
-                    //var updateId = location.Update(1, "Tenggumung","60153");
-                    //Console.WriteLine(updateId);
-
-                    var getIdloc = location.GetById(1);
-                    Console.WriteLine("Diperoleh");
-                    Console.WriteLine($"ID : {getIdloc.Id}");
-                    Console.WriteLine($"Nama Lokasi : {getIdloc.street_address}");
-
-                    var delId = location.Delete(6);
-                    Console.WriteLine(delId);
-                    getlocation(location);
+                    LocationMenu();
                     break;
                 case "4":
                     Console.WriteLine("Data Job");

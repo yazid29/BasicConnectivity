@@ -25,7 +25,7 @@ namespace BasicConnectivity.Controllers
             }
             else
             {
-                _countryView.List(results, "country");
+                _countryView.List(results, "Country");
             }
         }
         public void GetDataId()
@@ -51,7 +51,7 @@ namespace BasicConnectivity.Controllers
             }
             
             var result = _country.GetById(input);
-            _countryView.Single(result, "Region");
+            _countryView.Single(result, "Country");
         }
         public void InsertData()
         {
