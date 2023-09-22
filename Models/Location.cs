@@ -194,9 +194,9 @@ namespace BasicConnectivity
                     connectDB.Close();
 
                     // jika query sukses dieksekusi maka isi dari result tidak akan 0 sehingga query berhasil dieksekusi
-                    if (result >= 0)
+                    if (result > 0)
                     {
-                        return "Update Success";
+                        return result.ToString();
                     }
                     return "Update Gagal";
                 }
@@ -241,9 +241,9 @@ namespace BasicConnectivity
                     // tutup semua koneksi database
                     connectDB.Close();
                     // jika query sukses dieksekusi maka isi dari result tidak akan 0 sehingga query berhasil dieksekusi
-                    if (result >= 1)
+                    if (result > 0)
                     {
-                        return "Data berhasil dihapus";
+                        return result.ToString();
                     }
                     else
                     {

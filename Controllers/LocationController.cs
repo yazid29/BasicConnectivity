@@ -103,6 +103,39 @@ namespace BasicConnectivity.Controllers
             var result = _location.Insert(Convert.ToInt32(id), street_address, postal_code, city, stat_province, country_id);
             _locationView.Transaction(result);
         }
+        public void UpdateData()
+        {
+            int x = 0;
+            string id = "";
+            string input = " ",input2 = "";
+            var isTrue = true;
+            while (isTrue)
+            {
+                try
+                {
+                    id = _locationView.InputId();
+                    input = _locationView.InsertInput("Street Address");
+                    input2 = _locationView.InsertInput("Postal Code");
+                    if (!int.TryParse(id, out x))
+                    {
+                        Console.WriteLine("Must be integer");
+                        continue;
+                    }
+                    if (string.IsNullOrEmpty(input) || string.IsNullOrEmpty(input2))
+                    {
+                        Console.WriteLine("name cannot be empty");
+                        continue;
+                    }
+                    isTrue = false;
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                }
+            }
+            var result = _location.Update(Convert.ToInt32(id),input, input2);
+            _locationView.Transaction(result);
+        }
         public void DeleteData()
         {
             int id = 0;

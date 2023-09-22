@@ -151,11 +151,11 @@ namespace BasicConnectivity
                         locationController.InsertData();
                         break;
                     case "4":
-                        //locationController.UpdateData();
+                        locationController.UpdateData();
                         break;
                         
                     case "5":
-                        //locationController.DeleteData();
+                        locationController.DeleteData();
                         break;
                     default:
                         Console.WriteLine("Invalid choice");
@@ -192,8 +192,6 @@ namespace BasicConnectivity
                     //getJobs(job);
                     //var deljob = job.Delete("ce");
                     //Console.WriteLine(deljob);
-
-
                     break;
                 case "5":
                     Console.WriteLine("Data Department");
