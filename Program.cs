@@ -36,6 +36,15 @@ namespace BasicConnectivity
                 choice = Menu(input);
             }
         }
+        public static void subMenu(string str)
+        {
+            Console.WriteLine($"1. List all {str}");
+            Console.WriteLine($"2. Get data {str}");
+            Console.WriteLine($"3. Insert new {str}");
+            Console.WriteLine($"4. Update {str}");
+            Console.WriteLine($"5. Delete {str}");
+            Console.WriteLine("0. Back");
+        }
         public static void RegionMenu()
         {
             var region = new Region();
@@ -46,12 +55,7 @@ namespace BasicConnectivity
             var isLoop = true;
             while (isLoop)
             {
-                Console.WriteLine("1. List all regions");
-                Console.WriteLine("2. Get data region");
-                Console.WriteLine("3. Insert new region");
-                Console.WriteLine("4. Update region");
-                Console.WriteLine("5. Delete region");
-                Console.WriteLine("0. Back");
+                subMenu("Region");
                 Console.Write("Enter your choice: ");
                 var input2 = Console.ReadLine();
                 switch (input2)
@@ -90,12 +94,7 @@ namespace BasicConnectivity
             var isLoop = true;
             while (isLoop)
             {
-                Console.WriteLine("1. List all Country");
-                Console.WriteLine("2. Get data Country");
-                Console.WriteLine("3. Insert new Country");
-                Console.WriteLine("4. Update Country");
-                Console.WriteLine("5. Delete Country");
-                Console.WriteLine("0. Back");
+                subMenu("Country");
                 Console.Write("Enter your choice: ");
                 var input2 = Console.ReadLine();
                 switch (input2)
@@ -134,12 +133,7 @@ namespace BasicConnectivity
             var isLoop = true;
             while (isLoop)
             {
-                Console.WriteLine("1. List all Location");
-                Console.WriteLine("2. Get data Location");
-                Console.WriteLine("3. Insert new Location");
-                //Console.WriteLine("4. Update Location");
-                Console.WriteLine("5. Delete Location");
-                Console.WriteLine("0. Back");
+                subMenu("Location");
                 Console.Write("Enter your choice: ");
                 var input2 = Console.ReadLine();
                 switch (input2)
