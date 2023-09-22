@@ -136,9 +136,9 @@ namespace BasicConnectivity
             {
                 Console.WriteLine("1. List all Location");
                 Console.WriteLine("2. Get data Location");
-                //Console.WriteLine("3. Insert new Country");
-                //Console.WriteLine("4. Update Country");
-                Console.WriteLine("5. Delete Country");
+                Console.WriteLine("3. Insert new Location");
+                //Console.WriteLine("4. Update Location");
+                Console.WriteLine("5. Delete Location");
                 Console.WriteLine("0. Back");
                 Console.Write("Enter your choice: ");
                 var input2 = Console.ReadLine();
@@ -154,7 +154,7 @@ namespace BasicConnectivity
                         locationController.GetDataId();
                         break;
                     case "3":
-                        //locationController.InsertData();
+                        locationController.InsertData();
                         break;
                     case "4":
                         //locationController.UpdateData();

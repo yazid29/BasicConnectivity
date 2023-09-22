@@ -14,5 +14,12 @@ namespace BasicConnectivity.ViewModels
             var id = Console.ReadLine();
             return id;
         }
+        public string InsertInput(string str)
+        {
+            Console.WriteLine($"Insert {str} name");
+            var name = Console.ReadLine();
+
+            return name;
+        }
     }
 }
