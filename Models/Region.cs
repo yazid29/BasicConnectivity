@@ -1,8 +1,6 @@
-﻿using System;
+﻿using BasicConnectivity.Models;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Data;
 using System.Data.SqlClient;
 
@@ -12,23 +10,29 @@ namespace BasicConnectivity
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        // deklarasi untuk koneksi database
-        DBconnection database = new DBconnection();
-
+        
+        //DBconnection database = new DBconnection();
+        
+        public override string ToString()
+        {
+            return $"{Id} - {Name}";
+        }
+        
         //method untuk menampilkan semua data region
         public List<Region> GetAll()
         {
-            //declarasi sebuah daftar region, dan SqlCommand untuk menampung daftar query
+            //declarasi sebuah daftar region, dan SqlCommand untuk menampung daftar query          
             var regions = new List<Region>();
-            using var command = new SqlCommand();
+            // deklarasi untuk koneksi database
+            using var connectDB = DBconnection.GetDBConnection();
+            using var command = DBconnection.GetDBCommand();
 
-            command.Connection = database.getDB();
+            command.Connection = connectDB;
             command.CommandText = "SELECT * FROM regions";
 
             try
             {
-                database.ConnectDB();
-
+                connectDB.Open();
                 using var reader = command.ExecuteReader();
 
                 if (reader.HasRows)
@@ -42,14 +46,12 @@ namespace BasicConnectivity
                         });
                     }
                     reader.Close();
-                    database.CloseDB();
+                    connectDB.Close();
 
                     return regions;
                 }
                 reader.Close();
-                database.CloseDB();
-
-                return new List<Region>();
+                connectDB.Close();
             }
             catch (Exception ex)
             {
@@ -58,63 +60,21 @@ namespace BasicConnectivity
 
             return new List<Region>();
         }
-
-        // INSERT: Region
-        // masukan data ke dalam tabel region
-        public string Insert(string name)
-        {
-            // declarasi database
-            DBconnection database = new DBconnection();
-            // declarasi command untuk tempat query SQL
-            using var command = new SqlCommand();
-            var connection = database.getDB();
-            command.Connection = connection;
-            command.CommandText = "INSERT INTO regions VALUES (@name);";
-
-            try
-            {
-                command.Parameters.Add(new SqlParameter("@name", name));
-
-                database.ConnectDB();
-                using var transaction = connection.BeginTransaction();
-                try
-                {
-                    command.Transaction = transaction;
-
-                    var result = command.ExecuteNonQuery();
-
-                    transaction.Commit();
-                    database.CloseDB();
-                    return result.ToString();
-                }
-                catch (Exception ex)
-                {
-                    transaction.Rollback();
-                    return $"Error Transaction: {ex.Message}";
-                }
-            }
-            catch (Exception ex)
-            {
-                return $"Error: {ex.Message}";
-            }
-        }
         // GET BY ID: Region
         // menampilkan data sesuai dengan id yang di inginkan
         public Region GetById(int id)
         {
             // declarasi database
-            DBconnection database = new DBconnection();
-            // declarasi command untuk tempat query SQL
-            using var command = new SqlCommand();
-            var connection = database.getDB();
-            command.Connection = connection;
+            using var connectDB = DBconnection.GetDBConnection();
+            using var command = DBconnection.GetDBCommand();
+            command.Connection = connectDB;
             // query select semua columns atau atribut sesuai id yang diinginkan
             command.CommandText = "SELECT * FROM regions WHERE id=" + id;
 
             try
             {
                 // hubungkan database
-                connection.Open();
+                connectDB.Open();
                 // jalankan semua query yang sudah ditulis diatas pada variable command
                 using var reader = command.ExecuteReader();
                 // jika terdapat isinya maka datanya dikembalikan
@@ -129,7 +89,7 @@ namespace BasicConnectivity
                 }
                 // tutup semua koneksi database
                 reader.Close();
-                connection.Close();
+                connectDB.Close();
                 return datae;
             }
             catch (Exception ex)
@@ -138,6 +98,47 @@ namespace BasicConnectivity
             }
             return new Region();
         }
+        
+        // INSERT: Region
+        // masukan data ke dalam tabel region
+        public string Insert(string name)
+        {
+            // declarasi database
+            DBconnection database = new DBconnection();
+            // declarasi command untuk tempat query SQL
+            using var command = new SqlCommand();
+            var connection = database.getDB();
+            command.Connection = connection;
+            command.CommandText = "INSERT INTO regions VALUES (@name);";
+
+            try
+            {
+                command.Parameters.Add(DBconnection.SetParameterQ("@name", name));
+                connection.Open();
+                using var transaction = connection.BeginTransaction();
+                try
+                {
+                    command.Transaction = transaction;
+
+                    var result = command.ExecuteNonQuery();
+
+                    transaction.Commit();
+                    connection.Close();
+                    return result.ToString();
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+                    return $"Error Transaction: {ex.Message}";
+                }
+            }
+            catch (Exception ex)
+            {
+                return $"Error: {ex.Message}";
+            }
+        }
+
+        
         // UPDATE: Region
         public string Update(int id, string name)
         {
@@ -152,9 +153,11 @@ namespace BasicConnectivity
 
             try
             {
-
                 // tentukan data yang ingin dimasukan kedalam database,
                 // dengan mengisi setiap parameter yang ditentukan pada commandText yang ditandai dengan simbol @
+                command.Parameters.Add(DBconnection.SetParameterQ("@name", name));
+                command.Parameters.Add(DBconnection.SetParameterQ("@id", id));
+                /*
                 var pName = new SqlParameter();
                 pName.ParameterName = "@name";
                 pName.Value = name;
@@ -166,7 +169,7 @@ namespace BasicConnectivity
                 pId.Value = id;
                 pId.SqlDbType = SqlDbType.Int;
                 command.Parameters.Add(pId);
-
+                */
                 // hubungkan database
                 connection.Open();
                 // begintransaction digunakan jika dalam method ini melakukan pembaruhan atau perubahan dalam database
@@ -180,13 +183,12 @@ namespace BasicConnectivity
                     transaction.Commit();
                     // tutup semua koneksi database
                     connection.Close();
-
                     // jika query sukses dieksekusi maka isi dari result tidak akan 0 sehingga query berhasil dieksekusi
-                    if(result >= 0)
+                    if (result > 0)
                     {
-                        return "Update Success";
+                        return result.ToString();
                     }
-                    return "Update Gagal";
+                    return "Data gagal diupdate";
                 }
                 catch (Exception ex)
                 {
@@ -228,14 +230,11 @@ namespace BasicConnectivity
                     // tutup semua koneksi database
                     connection.Close();
                     // jika query sukses dieksekusi maka isi dari result tidak akan 0 sehingga query berhasil dieksekusi
-                    if(result >= 1)
+                    if (result > 0)
                     {
-                        return "Data berhasil dihapus";
+                        return result.ToString();
                     }
-                    else
-                    {
-                        return "Data gagal dihapus";
-                    }
+                    return "Data gagal dihapus";
                 }
                 catch (Exception ex)
                 {

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using BasicConnectivity.Controllers;
+using BasicConnectivity.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
@@ -34,39 +36,103 @@ namespace BasicConnectivity
                 choice = Menu(input);
             }
         }
+        public static void RegionMenu()
+        {
+            var region = new Region();
+            var regionView = new RegionView();
+
+            var regionController = new RegionController(region, regionView);
+
+            var isLoop = true;
+            while (isLoop)
+            {
+                Console.WriteLine("1. List all regions");
+                Console.WriteLine("2. Get data region");
+                Console.WriteLine("3. Insert new region");
+                Console.WriteLine("4. Update region");
+                Console.WriteLine("5. Delete region");
+                Console.WriteLine("0. Back");
+                Console.Write("Enter your choice: ");
+                var input2 = Console.ReadLine();
+                switch (input2)
+                {
+                    case "0":
+                        isLoop = false;
+                        break;
+                    case "1":
+                        regionController.GetAllData();
+                        break;
+                    case "2":
+                        regionController.GetDataId();
+                        break;
+                    case "3":
+                        regionController.InsertData();
+                        break;
+                    case "4":
+                        regionController.UpdateData();
+                        break;
+                    case "5":
+                        regionController.DeleteData();
+                        break;
+                    default:
+                        Console.WriteLine("Invalid choice");
+                        break;
+                }
+            }
+        }
+        public static void CountryMenu()
+        {
+            var country = new Country();
+            var countryView = new CountryView();
+
+            var countryController = new CountryController(country, countryView);
+
+            var isLoop = true;
+            while (isLoop)
+            {
+                Console.WriteLine("1. List all Country");
+                Console.WriteLine("2. Get data Country");
+                Console.WriteLine("3. Insert new Country");
+                Console.WriteLine("4. Update Country");
+                Console.WriteLine("5. Delete Country");
+                Console.WriteLine("0. Back");
+                Console.Write("Enter your choice: ");
+                var input2 = Console.ReadLine();
+                switch (input2)
+                {
+                    case "0":
+                        isLoop = false;
+                        break;
+                    case "1":
+                        countryController.GetAllData();
+                        break;
+                    case "2":
+                        countryController.GetDataId();
+                        break;
+                    case "3":
+                        countryController.InsertData();
+                        break;
+                    case "4":
+                        countryController.UpdateData();
+                        break;
+                    case "5":
+                        countryController.DeleteData();
+                        break;
+                    default:
+                        Console.WriteLine("Invalid choice");
+                        break;
+                }
+            }
+        }
         public static bool Menu(string input)
         {
             switch (input)
             {
                 case "1":
-                    Console.WriteLine("Data Region");
-                    // GetAll Region: tampilkan semua region
-                    var region = new Region();
-                    //getRegion(region);
-                    // Insert Region : masukan data region
-
-                    //var insertRegion = region.Insert("Jawa Timur");
-                    //Console.WriteLine("Sukses Insert");
-
-                    //GetById Region : ambil data sesuai id
-                    var getId = region.GetById(29);
-                    Console.WriteLine("Diperoleh :");
-                    Console.WriteLine($"ID : {getId.Id}");
-                    Console.WriteLine($"Nama Region : {getId.Name}");
-
-                    //panggil method update untuk memperbarui data
-                    //var updateId = region.Update(29, "East Asia");
-                    //Console.WriteLine(updateId);
-
-                    //var getId2 = region.GetById(29);
-                    //Console.WriteLine("Diperoleh :");
-                    //Console.WriteLine($"ID : {getId2.Id}");
-                    //Console.WriteLine($"Nama Region : {getId2.Name}");
-                    // Delete Region : delete data region
-                    //var delId = region.Delete(27);
-                    //Console.WriteLine(delId);
+                    RegionMenu();
                     break;
                 case "2":
+                    CountryMenu();
                     Console.WriteLine("Data Countries");
                     var country = new Country();
                     //getCountry(country);
@@ -261,6 +327,8 @@ namespace BasicConnectivity
                             Console.WriteLine($"min_salary: {item.min_salary},max_salary: {item.max_salary},rata-rata: {item.average_salary}");
                         }
                     }
+                    break;
+                case "10":
                     break;
                 case "99":
                     return false;

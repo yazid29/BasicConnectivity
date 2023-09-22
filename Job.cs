@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BasicConnectivity
 {
@@ -71,7 +68,7 @@ namespace BasicConnectivity
             var connection = database.getDB();
             command.Connection = connection;
             // query select semua columns atau atribut sesuai id yang diinginkan
-            command.CommandText = $"SELECT * FROM jobs WHERE id= '{id}'" ;
+            command.CommandText = $"SELECT * FROM jobs WHERE id= '{id}'";
 
             try
             {

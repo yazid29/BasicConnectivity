@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BasicConnectivity
 {
@@ -108,7 +105,7 @@ namespace BasicConnectivity
                         datae.manager_id = reader.GetInt32(8);
                         datae.job_id = reader.GetString(9);
                         datae.department_id = reader.GetInt32(10);
-                        
+
                     }
                 }
                 // tutup semua koneksi database
@@ -123,7 +120,7 @@ namespace BasicConnectivity
             return new Employee();
         }
         //id,first_name,last_name,email,phone_number,hire_date,salary,commision_pct,manager_id
-        public string Insert(int id, string first_name, string last_name, string email, string phone_number, DateTime hire_date,int salary, Double commision_pct, int manager_id)
+        public string Insert(int id, string first_name, string last_name, string email, string phone_number, DateTime hire_date, int salary, Double commision_pct, int manager_id)
         {
             // declarasi database
             DBconnection database = new DBconnection();

@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Data.SqlClient;
 
 namespace BasicConnectivity
 {
@@ -13,22 +10,28 @@ namespace BasicConnectivity
         public string Id { get; set; }
         public string Name { get; set; }
         public int Region_id { get; set; }
-        // deklarasi untuk koneksi database
-        DBconnection database = new DBconnection();
+
+        public override string ToString()
+        {
+            return $"{Id} - {Name} - {Region_id}";
+        }
 
         //method untuk menampilkan semua datacountry
         public List<Country> GetAll()
         {
             //declarasi sebuah daftar datacountry, dan SqlCommand untuk menampung daftar query
             var country = new List<Country>();
-            using var command = new SqlCommand();
+            var regions = new List<Region>();
+            // deklarasi untuk koneksi database
+            using var connectDB = DBconnection.GetDBConnection();
+            using var command = DBconnection.GetDBCommand();
 
-            command.Connection = database.getDB();
+            command.Connection = connectDB;
             command.CommandText = "SELECT * FROM countries";
 
             try
             {
-                database.ConnectDB();
+                connectDB.Open();
 
                 using var reader = command.ExecuteReader();
 
@@ -40,16 +43,16 @@ namespace BasicConnectivity
                         {
                             Id = reader.GetString(0),
                             Name = reader.GetString(1),
-                            Region_id= reader.GetInt32(2)
+                            Region_id = reader.GetInt32(2)
                         });
                     }
                     reader.Close();
-                    database.CloseDB();
+                    connectDB.Close();
 
                     return country;
                 }
                 reader.Close();
-                database.CloseDB();
+                connectDB.Close();
 
                 return new List<Country>();
             }
@@ -63,14 +66,16 @@ namespace BasicConnectivity
 
         // INSERT: Country
         // masukan data ke dalam tabel Country
-        public string Insert(string id,string name,int regionid)
+        public string Insert(string id, string name, int regionid)
         {
-            // declarasi database
-            DBconnection database = new DBconnection();
-            // declarasi command untuk tempat query SQL
-            using var command = new SqlCommand();
-            var connection = database.getDB();
-            command.Connection = connection;
+            //declarasi sebuah daftar datacountry, dan SqlCommand untuk menampung daftar query
+            var country = new List<Country>();
+            var regions = new List<Region>();
+            // deklarasi untuk koneksi database
+            using var connectDB = DBconnection.GetDBConnection();
+            using var command = DBconnection.GetDBCommand();
+
+            command.Connection = connectDB;
             command.CommandText = "INSERT INTO countries VALUES (@id,@name,@regionid);";
 
             try
@@ -79,8 +84,8 @@ namespace BasicConnectivity
                 command.Parameters.Add(new SqlParameter("@name", name));
                 command.Parameters.Add(new SqlParameter("@regionid", regionid));
 
-                database.ConnectDB();
-                using var transaction = connection.BeginTransaction();
+                connectDB.Open();
+                using var transaction = connectDB.BeginTransaction();
                 try
                 {
                     command.Transaction = transaction;
@@ -88,7 +93,7 @@ namespace BasicConnectivity
                     var result = command.ExecuteNonQuery();
 
                     transaction.Commit();
-                    database.CloseDB();
+                    connectDB.Close();
                     Console.WriteLine("sukses");
                     return result.ToString();
                 }
@@ -108,19 +113,21 @@ namespace BasicConnectivity
         // menampilkan data sesuai dengan id yang di inginkan
         public Country GetById(string id)
         {
-            // declarasi database
-            DBconnection database = new DBconnection();
-            // declarasi command untuk tempat query SQL
-            using var command = new SqlCommand();
-            var connection = database.getDB();
-            command.Connection = connection;
+            //declarasi sebuah daftar datacountry, dan SqlCommand untuk menampung daftar query
+            var country = new List<Country>();
+            var regions = new List<Region>();
+            // deklarasi untuk koneksi database
+            using var connectDB = DBconnection.GetDBConnection();
+            using var command = DBconnection.GetDBCommand();
+
+            command.Connection = connectDB;
             // query select semua columns atau atribut sesuai id yang diinginkan
             command.CommandText = $"SELECT * FROM countries WHERE id='{id}'";
 
             try
             {
                 // hubungkan database
-                connection.Open();
+                connectDB.Open();
                 // jalankan semua query yang sudah ditulis diatas pada variable command
                 using var reader = command.ExecuteReader();
                 // jika terdapat isinya maka datanya dikembalikan
@@ -131,11 +138,12 @@ namespace BasicConnectivity
                     {
                         datae.Id = reader.GetString(0);
                         datae.Name = reader.GetString(1);
+                        datae.Region_id = reader.GetInt32(2);
                     }
                 }
                 // tutup semua koneksi database
                 reader.Close();
-                connection.Close();
+                connectDB.Close();
                 return datae;
             }
             catch (Exception ex)
@@ -147,12 +155,14 @@ namespace BasicConnectivity
         // UPDATE: Country
         public string Update(string id, string name)
         {
-            // declarasi database
-            DBconnection database = new DBconnection();
-            // declarasi command untuk tempat query SQL
-            using var command = new SqlCommand();
-            var connection = database.getDB();
-            command.Connection = connection;
+            //declarasi sebuah daftar datacountry, dan SqlCommand untuk menampung daftar query
+            var country = new List<Country>();
+            var regions = new List<Region>();
+            // deklarasi untuk koneksi database
+            using var connectDB = DBconnection.GetDBConnection();
+            using var command = DBconnection.GetDBCommand();
+
+            command.Connection = connectDB;
             // query update columns atau atribut nama Country sesuai id yang diinginkan
             command.CommandText = "update countries set name = @name where id=@id";
 
@@ -174,10 +184,10 @@ namespace BasicConnectivity
                 command.Parameters.Add(pId);
 
                 // hubungkan database
-                connection.Open();
+                connectDB.Open();
                 // begintransaction digunakan jika dalam method ini melakukan pembaruhan atau perubahan dalam database
                 // dan bisa disebut juga sebagai bukti transaksi database tersebut berhasil atau tidak, sebelum data dalam database diubah
-                using var transaction = connection.BeginTransaction();
+                using var transaction = connectDB.BeginTransaction();
                 try
                 {
                     // jalankan query
@@ -186,12 +196,12 @@ namespace BasicConnectivity
                     var result = command.ExecuteNonQuery();
                     transaction.Commit();
                     // tutup semua koneksi database
-                    connection.Close();
+                    connectDB.Close();
 
                     // jika query sukses dieksekusi maka isi dari result tidak akan 0 sehingga query berhasil dieksekusi
-                    if (result >= 0)
+                    if (result > 0)
                     {
-                        return "Update Success";
+                        result.ToString();
                     }
                     return "Update Gagal";
                 }
@@ -210,22 +220,24 @@ namespace BasicConnectivity
         // DELETE: Country
         public string Delete(string id)
         {
-            // declarasi database
-            DBconnection database = new DBconnection();
-            // declarasi command untuk tempat query SQL
-            using var command = new SqlCommand();
-            var connection = database.getDB();
-            command.Connection = connection;
+            //declarasi sebuah daftar datacountry, dan SqlCommand untuk menampung daftar query
+            var country = new List<Country>();
+            var regions = new List<Region>();
+            // deklarasi untuk koneksi database
+            using var connectDB = DBconnection.GetDBConnection();
+            using var command = DBconnection.GetDBCommand();
+
+            command.Connection = connectDB;
             // query delete dari tabelcountry sesuai ID
             command.CommandText = $"DELETE FROM countries WHERE id = '{id}'";
 
             try
             {
                 // hubungkan database
-                connection.Open();
+                connectDB.Open();
                 // begintransaction digunakan jika dalam method ini melakukan pembaruhan atau perubahan dalam database
                 // dan bisa disebut juga sebagai bukti transaksi database tersebut berhasil atau tidak, sebelum data dalam database diubah
-                using var transaction = connection.BeginTransaction();
+                using var transaction = connectDB.BeginTransaction();
                 try
                 {
                     // jalankan query
@@ -233,11 +245,11 @@ namespace BasicConnectivity
                     var result = command.ExecuteNonQuery();
                     transaction.Commit();
                     // tutup semua koneksi database
-                    connection.Close();
+                    connectDB.Close();
                     // jika query sukses dieksekusi maka isi dari result tidak akan 0 sehingga query berhasil dieksekusi
-                    if (result >= 1)
+                    if (result > 0)
                     {
-                        return "Data berhasil dihapus";
+                        return result.ToString();
                     }
                     else
                     {

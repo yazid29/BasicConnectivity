@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BasicConnectivity
 {
-    
+
     internal class History
     {
         public DateTime start_date { get; set; }
@@ -123,13 +120,13 @@ namespace BasicConnectivity
 
             try
             {
-                
+
                 command.Parameters.Add(new SqlParameter("@start_date", start_date1));
                 command.Parameters.Add(new SqlParameter("@employee_id", employee_id1));
                 command.Parameters.Add(new SqlParameter("@end_date", end_date1));
                 command.Parameters.Add(new SqlParameter("@department_id", department_id1));
                 command.Parameters.Add(new SqlParameter("@job_id", job_id1));
-                
+
                 database.ConnectDB();
                 using var transaction = connection.BeginTransaction();
                 try
@@ -153,7 +150,7 @@ namespace BasicConnectivity
                 return $"Error: {ex.Message}";
             }
         }
-        public string Update(DateTime start_date1, int employee_id1,int departments_id)
+        public string Update(DateTime start_date1, int employee_id1, int departments_id)
         {
             // declarasi database
             DBconnection database = new DBconnection();

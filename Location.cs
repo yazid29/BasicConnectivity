@@ -1,10 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BasicConnectivity
 {
@@ -110,7 +106,7 @@ namespace BasicConnectivity
             }
             return new Location();
         }
-        public string Insert(int id,string street_address, string postal_code, string city, string state_province, string country_id)
+        public string Insert(int id, string street_address, string postal_code, string city, string state_province, string country_id)
         {
             //Id (int) street_address postal_code city stat_province (string) country_id (string/char)
             // declarasi database
