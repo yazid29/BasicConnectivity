@@ -1,31 +1,35 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Xml.Linq;
 
 namespace BasicConnectivity
 {
-
-    internal class History
+    internal class Job
     {
-        public DateTime start_date { get; set; }
-        public int empolyee_id { get; set; }
-        public DateTime end_date { get; set; }
-        public int department_id { get; set; }
-        public string job_id { get; set; }
-        // deklarasi untuk koneksi database
-        DBconnection database = new DBconnection();
-        public List<History> GetAll()
+        // id (string) title (string) min_salary max_salary (int)
+        public string Id { get; set; }
+        public string title { get; set; }
+        public int min_salary { get; set; }
+        public int max_salary { get; set; }
+        public override string ToString()
+        {
+            return $"{Id} - {title} - {min_salary} - {max_salary}";
+        }
+        public List<Job> GetAll()
         {
             //declarasi sebuah daftar dataJob, dan SqlCommand untuk menampung daftar query
-            var job = new List<History>();
-            using var command = new SqlCommand();
+            var job = new List<Job>();
+            // deklarasi untuk koneksi database
+            using var connectDB = DBconnection.GetDBConnection();
+            using var command = DBconnection.GetDBCommand();
 
-            command.Connection = database.getDB();
-            command.CommandText = "SELECT * FROM histories";
+            command.Connection = connectDB;
+            command.CommandText = "SELECT * FROM jobs";
 
             try
             {
-                database.ConnectDB();
+                connectDB.Open();
 
                 using var reader = command.ExecuteReader();
 
@@ -33,35 +37,33 @@ namespace BasicConnectivity
                 {
                     while (reader.Read())
                     {
-                        job.Add(new History
+                        job.Add(new Job
                         {
-
-                            start_date = reader.GetDateTime(0),
-                            empolyee_id = reader.GetInt32(1),
-                            end_date = reader.GetDateTime(2),
-                            department_id = reader.GetInt32(3),
-                            job_id = reader.GetString(4),
+                            Id = reader.GetString(0),
+                            title = reader.GetString(1),
+                            min_salary = reader.GetInt32(2),
+                            max_salary = reader.GetInt32(3),
                         });
                     }
                     reader.Close();
-                    database.CloseDB();
+                    connectDB.Close();
 
                     return job;
                 }
                 reader.Close();
-                database.CloseDB();
+                connectDB.Close();
 
-                return new List<History>();
+                return new List<Job>();
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Error: {ex.Message}");
             }
 
-            return new List<History>();
+            return new List<Job>();
         }
-
-        public History GetById(DateTime start_date, int id)
+        // id (string) title (string) min_salary max_salary (int)
+        public Job GetById(string id)
         {
             //Id (int) street_address postal_code city stat_province (string) country_id (string/char)
             // declarasi database
@@ -71,27 +73,24 @@ namespace BasicConnectivity
             var connection = database.getDB();
             command.Connection = connection;
             // query select semua columns atau atribut sesuai id yang diinginkan
-            // select * from histories where start_date>2023-09-13 AND employee_id=2
-            command.CommandText = $"SELECT * FROM histories WHERE start_date > @start_date AND employee_id= @id";
+            command.CommandText = $"SELECT * FROM jobs WHERE id= '{id}'";
 
             try
             {
-                command.Parameters.Add(new SqlParameter("@start_date", start_date));
-                command.Parameters.Add(new SqlParameter("@id", id));
                 // hubungkan database
                 connection.Open();
                 // jalankan semua query yang sudah ditulis diatas pada variable command
                 using var reader = command.ExecuteReader();
                 // jika terdapat isinya maka datanya dikembalikan
-                var datae = new History();
+                var datae = new Job();
                 if (reader.HasRows)
                 {
                     while (reader.Read())
                     {
-                        datae.start_date = reader.GetDateTime(0);
-                        datae.empolyee_id = reader.GetInt32(1);
-                        datae.end_date = reader.GetDateTime(2);
-                        datae.department_id = reader.GetInt32(3);
+                        datae.Id = reader.GetString(0);
+                        datae.title = reader.GetString(1);
+                        datae.min_salary = reader.GetInt32(2);
+                        datae.max_salary = reader.GetInt32(3);
                     }
                 }
                 // tutup semua koneksi database
@@ -103,32 +102,26 @@ namespace BasicConnectivity
             {
                 Console.WriteLine($"Error: {ex.Message}");
             }
-            return new History();
+            return new Job();
         }
-
-
-        // start_date,employee_id,end_date,department_id,job_id
-        public string Insert(DateTime start_date1, int employee_id1, DateTime end_date1, int department_id1, string job_id1)
+        public string Insert(string id, string title, int min_salary, int max_salary)
         {
-            // declarasi database
-            DBconnection database = new DBconnection();
-            // declarasi command untuk tempat query SQL
-            using var command = new SqlCommand();
-            var connection = database.getDB();
-            command.Connection = connection;
-            command.CommandText = "INSERT INTO histories VALUES (@start_date,@employee_id,@end_date,@department_id,@job_id);";
+            // deklarasi untuk koneksi database
+            using var connectDB = DBconnection.GetDBConnection();
+            using var command = DBconnection.GetDBCommand();
+
+            command.Connection = connectDB;
+            command.CommandText = "INSERT INTO jobs VALUES (@id,@title,@min_salary,@max_salary);";
 
             try
             {
+                command.Parameters.Add(new SqlParameter("@id", id));
+                command.Parameters.Add(new SqlParameter("@title", title));
+                command.Parameters.Add(new SqlParameter("@min_salary", min_salary));
+                command.Parameters.Add(new SqlParameter("@max_salary", max_salary));
 
-                command.Parameters.Add(new SqlParameter("@start_date", start_date1));
-                command.Parameters.Add(new SqlParameter("@employee_id", employee_id1));
-                command.Parameters.Add(new SqlParameter("@end_date", end_date1));
-                command.Parameters.Add(new SqlParameter("@department_id", department_id1));
-                command.Parameters.Add(new SqlParameter("@job_id", job_id1));
-
-                database.ConnectDB();
-                using var transaction = connection.BeginTransaction();
+                connectDB.Open();
+                using var transaction = connectDB.BeginTransaction();
                 try
                 {
                     command.Transaction = transaction;
@@ -136,7 +129,7 @@ namespace BasicConnectivity
                     var result = command.ExecuteNonQuery();
 
                     transaction.Commit();
-                    database.CloseDB();
+                    connectDB.Close();
                     return result.ToString();
                 }
                 catch (Exception ex)
@@ -150,30 +143,30 @@ namespace BasicConnectivity
                 return $"Error: {ex.Message}";
             }
         }
-        public string Update(DateTime start_date1, int employee_id1, int departments_id)
+        // id (string) title (string) min_salary max_salary (int)
+        public string Update(string id, string title)
         {
-            // declarasi database
-            DBconnection database = new DBconnection();
-            // declarasi command untuk tempat query SQL
-            using var command = new SqlCommand();
-            var connection = database.getDB();
-            command.Connection = connection;
+            // deklarasi untuk koneksi database
+            using var connectDB = DBconnection.GetDBConnection();
+            using var command = DBconnection.GetDBCommand();
+
+            command.Connection = connectDB;
             // query update columns atau atribut nama region sesuai id yang diinginkan
-            command.CommandText = "UPDATE histories SET department_id = @department_id WHERE start_date > @start_date AND employee_id=@employee_id1;";
+            command.CommandText = "UPDATE jobs SET title = @title WHERE id = @id;";
 
             try
             {
 
                 // tentukan data yang ingin dimasukan kedalam database,
                 // dengan mengisi setiap parameter yang ditentukan pada commandText yang ditandai dengan simbol @
-                command.Parameters.Add(new SqlParameter("@employee_id1", employee_id1));
-                command.Parameters.Add(new SqlParameter("@start_date", start_date1));
-                command.Parameters.Add(new SqlParameter("@department_id", departments_id));
+                command.Parameters.Add(new SqlParameter("@id", id));
+                command.Parameters.Add(new SqlParameter("@title", title));
+
                 // hubungkan database
-                connection.Open();
+                connectDB.Open();
                 // begintransaction digunakan jika dalam method ini melakukan pembaruhan atau perubahan dalam database
                 // dan bisa disebut juga sebagai bukti transaksi database tersebut berhasil atau tidak, sebelum data dalam database diubah
-                using var transaction = connection.BeginTransaction();
+                using var transaction = connectDB.BeginTransaction();
                 try
                 {
                     // jalankan query
@@ -181,12 +174,12 @@ namespace BasicConnectivity
                     var result = command.ExecuteNonQuery();
                     transaction.Commit();
                     // tutup semua koneksi database
-                    connection.Close();
+                    connectDB.Close();
 
                     // jika query sukses dieksekusi maka isi dari result tidak akan 0 sehingga query berhasil dieksekusi
-                    if (result >= 0)
+                    if (result > 0)
                     {
-                        return "Update Success";
+                        return result.ToString();
                     }
                     return "Update Gagal";
                 }
@@ -202,26 +195,23 @@ namespace BasicConnectivity
                 return $"Error: {ex.Message}";
             }
         }
-        public string Delete(DateTime start_date1, int employee_id1)
+        public string Delete(string id)
         {
-            // declarasi database
-            DBconnection database = new DBconnection();
-            // declarasi command untuk tempat query SQL
-            using var command = new SqlCommand();
-            var connection = database.getDB();
-            command.Connection = connection;
+            // deklarasi untuk koneksi database
+            using var connectDB = DBconnection.GetDBConnection();
+            using var command = DBconnection.GetDBCommand();
+
+            command.Connection = connectDB;
             // query delete dari tabel regions sesuai ID
-            command.CommandText = "DELETE FROM histories WHERE start_date>@start_date AND employee_id=@employee_id1";
+            command.CommandText = $"DELETE FROM jobs WHERE id = {id}";
 
             try
             {
-                command.Parameters.Add(new SqlParameter("@start_date", start_date1));
-                command.Parameters.Add(new SqlParameter("@employee_id", employee_id1));
-
-                database.ConnectDB();
+                // hubungkan database
+                connectDB.Open();
                 // begintransaction digunakan jika dalam method ini melakukan pembaruhan atau perubahan dalam database
                 // dan bisa disebut juga sebagai bukti transaksi database tersebut berhasil atau tidak, sebelum data dalam database diubah
-                using var transaction = connection.BeginTransaction();
+                using var transaction = connectDB.BeginTransaction();
                 try
                 {
                     // jalankan query
@@ -229,11 +219,11 @@ namespace BasicConnectivity
                     var result = command.ExecuteNonQuery();
                     transaction.Commit();
                     // tutup semua koneksi database
-                    connection.Close();
+                    connectDB.Close();
                     // jika query sukses dieksekusi maka isi dari result tidak akan 0 sehingga query berhasil dieksekusi
-                    if (result >= 1)
+                    if (result > 0)
                     {
-                        return "Data berhasil dihapus";
+                        return result.ToString();
                     }
                     else
                     {

@@ -11,22 +11,26 @@ namespace BasicConnectivity
         public string Name { get; set; }
         public int location_id { get; set; }
         public int manager_id { get; set; }
-        // deklarasi untuk koneksi database
-        DBconnection database = new DBconnection();
+        public override string ToString()
+        {
+            return $"{Id} - {Name} - {location_id} - {manager_id}";
+        }
 
         //method untuk menampilkan semua dataDepartment
         public List<Departments> GetAll()
         {
             //declarasi sebuah daftar dataDepartment, dan SqlCommand untuk menampung daftar query
             var departments = new List<Departments>();
-            using var command = new SqlCommand();
+            // deklarasi untuk koneksi database
+            using var connectDB = DBconnection.GetDBConnection();
+            using var command = DBconnection.GetDBCommand();
 
-            command.Connection = database.getDB();
+            command.Connection = connectDB;
             command.CommandText = "SELECT * FROM departments";
 
             try
             {
-                database.ConnectDB();
+                connectDB.Open();
 
                 using var reader = command.ExecuteReader();
 
@@ -43,12 +47,12 @@ namespace BasicConnectivity
                         });
                     }
                     reader.Close();
-                    database.CloseDB();
+                    connectDB.Close();
 
                     return departments;
                 }
                 reader.Close();
-                database.CloseDB();
+                connectDB.Close();
 
                 return new List<Departments>();
             }
@@ -65,18 +69,19 @@ namespace BasicConnectivity
         {
             //Id (int) street_address postal_code city stat_province (string) country_id (string/char)
             // declarasi database
-            DBconnection database = new DBconnection();
-            // declarasi command untuk tempat query SQL
-            using var command = new SqlCommand();
-            var connection = database.getDB();
-            command.Connection = connection;
+            var departments = new List<Departments>();
+            // deklarasi untuk koneksi database
+            using var connectDB = DBconnection.GetDBConnection();
+            using var command = DBconnection.GetDBCommand();
+
+            command.Connection = connectDB;
             // query select semua columns atau atribut sesuai id yang diinginkan
             command.CommandText = $"SELECT * FROM departments WHERE id= '{id}'";
 
             try
             {
                 // hubungkan database
-                connection.Open();
+                connectDB.Open();
                 // jalankan semua query yang sudah ditulis diatas pada variable command
                 using var reader = command.ExecuteReader();
                 // jika terdapat isinya maka datanya dikembalikan
@@ -91,7 +96,7 @@ namespace BasicConnectivity
                 }
                 // tutup semua koneksi database
                 reader.Close();
-                connection.Close();
+                connectDB.Close();
                 return datae;
             }
             catch (Exception ex)
@@ -103,11 +108,12 @@ namespace BasicConnectivity
         public string Insert(int id, string title, int location_id, int manager_id)
         {
             // declarasi database
-            DBconnection database = new DBconnection();
-            // declarasi command untuk tempat query SQL
-            using var command = new SqlCommand();
-            var connection = database.getDB();
-            command.Connection = connection;
+            var departments = new List<Departments>();
+            // deklarasi untuk koneksi database
+            using var connectDB = DBconnection.GetDBConnection();
+            using var command = DBconnection.GetDBCommand();
+
+            command.Connection = connectDB;
             command.CommandText = "INSERT INTO departments VALUES (@id,@title,@location_id,@manager_id);";
 
             try
@@ -117,8 +123,8 @@ namespace BasicConnectivity
                 command.Parameters.Add(new SqlParameter("@location_id", location_id));
                 command.Parameters.Add(new SqlParameter("@manager_id", manager_id));
 
-                database.ConnectDB();
-                using var transaction = connection.BeginTransaction();
+                connectDB.Open();
+                using var transaction = connectDB.BeginTransaction();
                 try
                 {
                     command.Transaction = transaction;
@@ -126,7 +132,7 @@ namespace BasicConnectivity
                     var result = command.ExecuteNonQuery();
 
                     transaction.Commit();
-                    database.CloseDB();
+                    connectDB.Close();
                     return result.ToString();
                 }
                 catch (Exception ex)
@@ -143,11 +149,12 @@ namespace BasicConnectivity
         public string Update(int id, string title)
         {
             // declarasi database
-            DBconnection database = new DBconnection();
-            // declarasi command untuk tempat query SQL
-            using var command = new SqlCommand();
-            var connection = database.getDB();
-            command.Connection = connection;
+            var departments = new List<Departments>();
+            // deklarasi untuk koneksi database
+            using var connectDB = DBconnection.GetDBConnection();
+            using var command = DBconnection.GetDBCommand();
+
+            command.Connection = connectDB;
             // query update columns atau atribut nama region sesuai id yang diinginkan
             command.CommandText = "UPDATE departments SET name = @title WHERE id = @id;";
 
@@ -160,10 +167,10 @@ namespace BasicConnectivity
                 command.Parameters.Add(new SqlParameter("@title", title));
 
                 // hubungkan database
-                connection.Open();
+                connectDB.Open();
                 // begintransaction digunakan jika dalam method ini melakukan pembaruhan atau perubahan dalam database
                 // dan bisa disebut juga sebagai bukti transaksi database tersebut berhasil atau tidak, sebelum data dalam database diubah
-                using var transaction = connection.BeginTransaction();
+                using var transaction = connectDB.BeginTransaction();
                 try
                 {
                     // jalankan query
@@ -171,12 +178,12 @@ namespace BasicConnectivity
                     var result = command.ExecuteNonQuery();
                     transaction.Commit();
                     // tutup semua koneksi database
-                    connection.Close();
+                    connectDB.Close();
 
                     // jika query sukses dieksekusi maka isi dari result tidak akan 0 sehingga query berhasil dieksekusi
-                    if (result >= 0)
+                    if (result > 0)
                     {
-                        return "Update Success";
+                        return result.ToString();
                     }
                     return "Update Gagal";
                 }
@@ -195,21 +202,22 @@ namespace BasicConnectivity
         public string Delete(int id)
         {
             // declarasi database
-            DBconnection database = new DBconnection();
-            // declarasi command untuk tempat query SQL
-            using var command = new SqlCommand();
-            var connection = database.getDB();
-            command.Connection = connection;
+            var departments = new List<Departments>();
+            // deklarasi untuk koneksi database
+            using var connectDB = DBconnection.GetDBConnection();
+            using var command = DBconnection.GetDBCommand();
+
+            command.Connection = connectDB;
             // query delete dari tabel regions sesuai ID
             command.CommandText = $"DELETE FROM departments WHERE id = {id}";
 
             try
             {
                 // hubungkan database
-                connection.Open();
+                connectDB.Open();
                 // begintransaction digunakan jika dalam method ini melakukan pembaruhan atau perubahan dalam database
                 // dan bisa disebut juga sebagai bukti transaksi database tersebut berhasil atau tidak, sebelum data dalam database diubah
-                using var transaction = connection.BeginTransaction();
+                using var transaction = connectDB.BeginTransaction();
                 try
                 {
                     // jalankan query
@@ -217,11 +225,11 @@ namespace BasicConnectivity
                     var result = command.ExecuteNonQuery();
                     transaction.Commit();
                     // tutup semua koneksi database
-                    connection.Close();
+                    connectDB.Close();
                     // jika query sukses dieksekusi maka isi dari result tidak akan 0 sehingga query berhasil dieksekusi
-                    if (result >= 1)
+                    if (result > 0)
                     {
-                        return "Data berhasil dihapus";
+                        return result.ToString();
                     }
                     else
                     {

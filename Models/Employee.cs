@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Xml.Linq;
 
 namespace BasicConnectivity
 {
@@ -17,20 +18,25 @@ namespace BasicConnectivity
         public int manager_id { get; set; }
         public string job_id { get; set; }
         public int department_id { get; set; }
-        // deklarasi untuk koneksi database
-        DBconnection database = new DBconnection();
+
+        public override string ToString()
+        {
+            return $"{Id} - {first_name} {last_name} - {email} - {phone_number}";
+        }
         public List<Employee> GetAll()
         {
             //declarasi sebuah daftar dataJob, dan SqlCommand untuk menampung daftar query
             var Employee = new List<Employee>();
-            using var command = new SqlCommand();
+            // deklarasi untuk koneksi database
+            using var connectDB = DBconnection.GetDBConnection();
+            using var command = DBconnection.GetDBCommand();
 
-            command.Connection = database.getDB();
+            command.Connection = connectDB;
             command.CommandText = "SELECT * FROM employees";
 
             try
             {
-                database.ConnectDB();
+                connectDB.Open();
 
                 using var reader = command.ExecuteReader();
 
@@ -54,12 +60,12 @@ namespace BasicConnectivity
                         });
                     }
                     reader.Close();
-                    database.CloseDB();
+                    connectDB.Close();
 
                     return Employee;
                 }
                 reader.Close();
-                database.CloseDB();
+                connectDB.Close();
 
                 return new List<Employee>();
             }
@@ -73,19 +79,18 @@ namespace BasicConnectivity
         public Employee GetById(int id)
         {
             //Id (int) street_address postal_code city stat_province (string) country_id (string/char)
-            // declarasi database
-            DBconnection database = new DBconnection();
-            // declarasi command untuk tempat query SQL
-            using var command = new SqlCommand();
-            var connection = database.getDB();
-            command.Connection = connection;
+            // deklarasi untuk koneksi database
+            using var connectDB = DBconnection.GetDBConnection();
+            using var command = DBconnection.GetDBCommand();
+
+            command.Connection = connectDB;
             // query select semua columns atau atribut sesuai id yang diinginkan
             command.CommandText = $"SELECT * FROM employees WHERE id= '{id}'";
 
             try
             {
                 // hubungkan database
-                connection.Open();
+                connectDB.Open();
                 // jalankan semua query yang sudah ditulis diatas pada variable command
                 using var reader = command.ExecuteReader();
                 // jika terdapat isinya maka datanya dikembalikan
@@ -110,7 +115,7 @@ namespace BasicConnectivity
                 }
                 // tutup semua koneksi database
                 reader.Close();
-                connection.Close();
+                connectDB.Close();
                 return datae;
             }
             catch (Exception ex)
@@ -123,11 +128,11 @@ namespace BasicConnectivity
         public string Insert(int id, string first_name, string last_name, string email, string phone_number, DateTime hire_date, int salary, Double commision_pct, int manager_id)
         {
             // declarasi database
-            DBconnection database = new DBconnection();
-            // declarasi command untuk tempat query SQL
-            using var command = new SqlCommand();
-            var connection = database.getDB();
-            command.Connection = connection;
+            // deklarasi untuk koneksi database
+            using var connectDB = DBconnection.GetDBConnection();
+            using var command = DBconnection.GetDBCommand();
+
+            command.Connection = connectDB;
             command.CommandText = "INSERT INTO departments VALUES (@id,@first_name,@last_name,@email,@phone_number,@hire_date,@salary,@commision_pct,@manager_id);";
 
             try
@@ -142,8 +147,8 @@ namespace BasicConnectivity
                 command.Parameters.Add(new SqlParameter("@commision_pct", commision_pct));
                 command.Parameters.Add(new SqlParameter("@manager_id", manager_id));
 
-                database.ConnectDB();
-                using var transaction = connection.BeginTransaction();
+                connectDB.Open();
+                using var transaction = connectDB.BeginTransaction();
                 try
                 {
                     command.Transaction = transaction;
@@ -151,7 +156,7 @@ namespace BasicConnectivity
                     var result = command.ExecuteNonQuery();
 
                     transaction.Commit();
-                    database.CloseDB();
+                    connectDB.Close();
                     return result.ToString();
                 }
                 catch (Exception ex)
@@ -167,12 +172,11 @@ namespace BasicConnectivity
         }
         public string Update(int id, string fname)
         {
-            // declarasi database
-            DBconnection database = new DBconnection();
-            // declarasi command untuk tempat query SQL
-            using var command = new SqlCommand();
-            var connection = database.getDB();
-            command.Connection = connection;
+            // deklarasi untuk koneksi database
+            using var connectDB = DBconnection.GetDBConnection();
+            using var command = DBconnection.GetDBCommand();
+
+            command.Connection = connectDB;
             // query update columns atau atribut nama region sesuai id yang diinginkan
             command.CommandText = "UPDATE employees SET first_name = @fname WHERE id = @id;";
 
@@ -185,10 +189,10 @@ namespace BasicConnectivity
                 command.Parameters.Add(new SqlParameter("@fname", fname));
 
                 // hubungkan database
-                connection.Open();
+                connectDB.Open();
                 // begintransaction digunakan jika dalam method ini melakukan pembaruhan atau perubahan dalam database
                 // dan bisa disebut juga sebagai bukti transaksi database tersebut berhasil atau tidak, sebelum data dalam database diubah
-                using var transaction = connection.BeginTransaction();
+                using var transaction = connectDB.BeginTransaction();
                 try
                 {
                     // jalankan query
@@ -196,12 +200,12 @@ namespace BasicConnectivity
                     var result = command.ExecuteNonQuery();
                     transaction.Commit();
                     // tutup semua koneksi database
-                    connection.Close();
+                    connectDB.Close();
 
                     // jika query sukses dieksekusi maka isi dari result tidak akan 0 sehingga query berhasil dieksekusi
-                    if (result >= 0)
+                    if (result > 0)
                     {
-                        return "Update Success";
+                        return result.ToString();
                     }
                     return "Update Gagal";
                 }
@@ -219,22 +223,21 @@ namespace BasicConnectivity
         }
         public string Delete(int id)
         {
-            // declarasi database
-            DBconnection database = new DBconnection();
-            // declarasi command untuk tempat query SQL
-            using var command = new SqlCommand();
-            var connection = database.getDB();
-            command.Connection = connection;
+            // deklarasi untuk koneksi database
+            using var connectDB = DBconnection.GetDBConnection();
+            using var command = DBconnection.GetDBCommand();
+
+            command.Connection = connectDB;
             // query delete dari tabel regions sesuai ID
             command.CommandText = $"DELETE FROM employees WHERE id = {id}";
 
             try
             {
                 // hubungkan database
-                connection.Open();
+                connectDB.Open();
                 // begintransaction digunakan jika dalam method ini melakukan pembaruhan atau perubahan dalam database
                 // dan bisa disebut juga sebagai bukti transaksi database tersebut berhasil atau tidak, sebelum data dalam database diubah
-                using var transaction = connection.BeginTransaction();
+                using var transaction = connectDB.BeginTransaction();
                 try
                 {
                     // jalankan query
@@ -242,11 +245,11 @@ namespace BasicConnectivity
                     var result = command.ExecuteNonQuery();
                     transaction.Commit();
                     // tutup semua koneksi database
-                    connection.Close();
+                    connectDB.Close();
                     // jika query sukses dieksekusi maka isi dari result tidak akan 0 sehingga query berhasil dieksekusi
-                    if (result >= 1)
+                    if (result > 0)
                     {
-                        return "Data berhasil dihapus";
+                        return result.ToString();
                     }
                     else
                     {

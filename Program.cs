@@ -1,5 +1,6 @@
 ﻿using BasicConnectivity.Controllers;
 using BasicConnectivity.ViewModels;
+using BasicConnectivity.Views;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -163,6 +164,166 @@ namespace BasicConnectivity
                 }
             }
         }
+        public static void DepartmentMenu()
+        {
+            var departments = new Departments();
+            var departmentsView = new DepartmentView();
+
+            var departmentsController = new DepartmentController(departments, departmentsView);
+
+            var isLoop = true;
+            while (isLoop)
+            {
+                subMenu("Department");
+                Console.Write("Enter your choice: ");
+                var input2 = Console.ReadLine();
+                switch (input2)
+                {
+                    case "0":
+                        isLoop = false;
+                        break;
+                    case "1":
+                        departmentsController.GetAllData();
+                        break;
+                    case "2":
+                        //departmentsView.GetDataId();
+                        break;
+                    case "3":
+                        //departmentsView.InsertData();
+                        break;
+                    case "4":
+                        //departmentsView.UpdateData();
+                        break;
+
+                    case "5":
+                        //departmentsView.DeleteData();
+                        break;
+                    default:
+                        Console.WriteLine("Invalid choice");
+                        break;
+                }
+            }
+        }
+        public static void JobMenu()
+        {
+            var jobs = new Job();
+            var jobsView = new JobView();
+
+            var jobsController = new JobController(jobs, jobsView);
+
+            var isLoop = true;
+            while (isLoop)
+            {
+                subMenu("Jobs");
+                Console.Write("Enter your choice: ");
+                var input2 = Console.ReadLine();
+                switch (input2)
+                {
+                    case "0":
+                        isLoop = false;
+                        break;
+                    case "1":
+                        jobsController.GetAllData();
+                        break;
+                    case "2":
+                        //jobsController.GetDataId();
+                        break;
+                    case "3":
+                        //jobsController.InsertData();
+                        break;
+                    case "4":
+                        //jobsController.UpdateData();
+                        break;
+
+                    case "5":
+                        //jobsController.DeleteData();
+                        break;
+                    default:
+                        Console.WriteLine("Invalid choice");
+                        break;
+                }
+            }
+        }
+        public static void EmployeeMenu()
+        {
+            var employees = new Employee();
+            var employeeView = new EmployeeView();
+
+            var employeeController = new EmployeeController(employees, employeeView);
+
+            var isLoop = true;
+            while (isLoop)
+            {
+                subMenu("Employee");
+                Console.Write("Enter your choice: ");
+                var input2 = Console.ReadLine();
+                switch (input2)
+                {
+                    case "0":
+                        isLoop = false;
+                        break;
+                    case "1":
+                        employeeController.GetAllData();
+                        break;
+                    case "2":
+                        //employeeController.GetDataId();
+                        break;
+                    case "3":
+                        //employeeController.InsertData();
+                        break;
+                    case "4":
+                        //employeeController.UpdateData();
+                        break;
+
+                    case "5":
+                        //employeeController.DeleteData();
+                        break;
+                    default:
+                        Console.WriteLine("Invalid choice");
+                        break;
+                }
+            }
+        }
+        public static void HistoryMenu()
+        {
+            var history = new History();
+            var historyView = new HistoryView();
+
+            var historyController = new HistoryController(history, historyView);
+
+            var isLoop = true;
+            while (isLoop)
+            {
+                subMenu("History");
+                Console.Write("Enter your choice: ");
+                var input2 = Console.ReadLine();
+                switch (input2)
+                {
+                    case "0":
+                        isLoop = false;
+                        break;
+                    case "1":
+                        historyController.GetAllData();
+                        break;
+                    case "2":
+                        //historyController.GetDataId();
+                        break;
+                    case "3":
+                        //historyController.InsertData();
+                        break;
+                    case "4":
+                        //historyController.UpdateData();
+                        break;
+
+                    case "5":
+                        //historyController.DeleteData();
+                        break;
+                    default:
+                        Console.WriteLine("Invalid choice");
+                        break;
+                }
+            }
+        }
         public static bool Menu(string input)
         {
             switch (input)
@@ -177,88 +338,18 @@ namespace BasicConnectivity
                     LocationMenu();
                     break;
                 case "4":
-                    Console.WriteLine("Data Job");
-                    var job = new Job();
-
-                    //var insertJob = job.Insert("ce", "CEO", 5000, 8000);
-                    //Console.WriteLine(insertJob);
-                    var updateJob = job.Update("ce", "CEO A");
-                    Console.WriteLine(updateJob);
-
-                    var getjob = job.GetById("ce");
-                    Console.WriteLine("Diperoleh");
-                    Console.WriteLine($"ID : {getjob.Id}");
-                    Console.WriteLine($"Nama Lokasi : {getjob.title}");
-                    //getJobs(job);
-                    //var deljob = job.Delete("ce");
-                    //Console.WriteLine(deljob);
+                    JobMenu();
                     break;
                 case "5":
-                    Console.WriteLine("Data Department");
-                    var department = new Departments();
-
-                    //var insertDe = department.Insert(13, "Trainer 2", 10,3);
-                    //Console.WriteLine(insertDe);
-
-                    //getDepartments(department);
-                    //var updatedep = department.Update(12, "Trainer");
-                    //Console.WriteLine(updatedep);
-                    //getDepartments(department);
-                    var getdep = department.GetById(13);
-                    Console.WriteLine("Diperoleh");
-                    Console.WriteLine($"ID : {getdep.Id}");
-                    Console.WriteLine($"Nama Lokasi : {getdep.Name}");
-                    //var deldepp = department.Delete(13);
-                    //Console.WriteLine(deldepp);
-
+                    DepartmentMenu();
                     break;
                 case "6":
-                    Console.WriteLine("Data Employee");
-                    var employee = new Employee();
-                    getemployee(employee);
-                    //var insertEm = employee.Insert(31, "Moh", "Irfaan", "mohi@gmail.com", "082255556641", new DateTime(2023, 09, 20), 2000000, 3000.0,1);
-                    //Console.WriteLine(insertEm);
-
-                    //getDepartments(department);
-                    var updatedem = employee.Update(28, "Abang");
-                    Console.WriteLine(updatedem);
-                    //getemployee(employee);
-                    var getdemp = employee.GetById(28);
-                    Console.WriteLine("Diperoleh");
-                    //Console.WriteLine($"ID : {getdemp.department_id}");
-                    Console.WriteLine($"Nama Lokasi : {getdemp.first_name}");
-                    Console.WriteLine($"phone_number : {getdemp.phone_number}");
-                    Console.WriteLine($"hire_date : {getdemp.hire_date}");
-                    Console.WriteLine($"salary : {getdemp.salary}");
-                    Console.WriteLine($"commision_pct : {getdemp.commision_pct}");
-                    
-                    //var delemp = employee.Delete(28);
-                    //Console.WriteLine(delemp);
+                    EmployeeMenu();
                     break;
                 case "7":
-                    Console.WriteLine("Data History");
-                    var history = new History();
-                    //var insertHis = history.Insert(new DateTime(2023, 09, 20), 3, new DateTime(2023, 09, 22), 3, "be");
-                    //Console.WriteLine(insertHis);
-                    var getdhisdate = history.GetById(new DateTime(2023, 09, 13), 2);
-                    Console.WriteLine("Diperoleh");
-                    Console.WriteLine($"StartDate : {getdhisdate.start_date}");
-                    Console.WriteLine($"Id : {getdhisdate.department_id}");
-
-                    var updatedHist = history.Update(new DateTime(2023, 09, 13), 2,4);
-                    Console.WriteLine(updatedHist);
-
-                    var getdhisdate2 = history.GetById(new DateTime(2023, 09, 13), 2);
-                    Console.WriteLine("Diperoleh");
-                    Console.WriteLine($"StartDate : {getdhisdate2.start_date}");
-                    Console.WriteLine($"Id : {getdhisdate2.department_id}");
-
-                    //var delemp = history.Delete(new DateTime(2023, 09, 20), 3);
-                    //Console.WriteLine(delemp);
-                    //gethistory(history);
+                    HistoryMenu();
                     break;
                 case "8":
-                    
                     var department3 = new Departments();
                     var country3 = new Country();
                     var region3 = new Region();
@@ -340,123 +431,6 @@ namespace BasicConnectivity
                     break;
             }
             return true;
-        }
-        // fungsi getRegion agar dapat dipanggil berulang kali
-        static void getRegion(Region region)
-        {
-            var getAllRegion = region.GetAll();
-            if (getAllRegion.Count > 0)
-            {
-                foreach (var data in getAllRegion)
-                {
-                    Console.WriteLine($"Id: {data.Id}, Name: {data.Name}");
-                }
-            }
-            else
-            {
-                Console.WriteLine("No data found");
-            }
-        }
-
-        static void getCountry(Country country)
-        {
-            var getAllCountry = country.GetAll();
-            if (getAllCountry.Count > 0)
-            {
-                foreach (var data in getAllCountry)
-                {
-                    Console.WriteLine($"Id: {data.Id}, Name: {data.Name}");
-                }
-            }
-            else
-            {
-                Console.WriteLine("No data found");
-            }
-        }
-        static void getDepartments(Departments departments)
-        {
-            var getAllDepartments = departments.GetAll();
-            if (getAllDepartments.Count > 0)
-            {
-                foreach (var data in getAllDepartments)
-                {
-                    Console.WriteLine($"Id: {data.Id}, Name: {data.Name},location: {data.location_id},manager: {data.manager_id}");
-                }
-            }
-            else
-            {
-                Console.WriteLine("No data found");
-            }
-        }
-
-        static void getlocation(Location location)
-        {
-            var getAlllocation = location.GetAll();
-            if (getAlllocation.Count > 0)
-            {
-                foreach (var data in getAlllocation)
-                {
-                    Console.WriteLine($"Id: {data.Id}, StreetAddress: {data.street_address},postalCode: {data.postal_code},City: {data.city},Province:{data.stat_province}");
-                }
-            }
-            else
-            {
-                Console.WriteLine("No data found");
-            }
-        }
-        static void getJobs(Job job)
-        {
-            var getJobss = job.GetAll();
-            if (getJobss.Count > 0)
-            {
-                foreach (var data in getJobss)
-                {
-                    Console.WriteLine($"Id: {data.Id}, Name: {data.title},location: {data.min_salary},manager: {data.max_salary}");
-                }
-            }
-            else
-            {
-                Console.WriteLine("No data found");
-            }
-        }
-
-        static void getemployee(Employee employee)
-        {
-            var getemployeess = employee.GetAll();
-            if (getemployeess.Count > 0)
-            {
-                foreach (var data in getemployeess)
-                {
-                    Console.WriteLine($"Id: {data.Id}, First_name: {data.first_name}," +
-                        $" last name: {data.last_name}, email: {data.email}" +
-                        $" phone: {data.phone_number}");
-                    Console.WriteLine($"hire_date: {data.hire_date}-{data.salary}-{data.job_id}-{data.department_id}");
-                    ///$"phone: {data.phone_number},hire_date: {data.hire_date},salary: {data.salary}");
-                }
-            }
-            else
-            {
-                Console.WriteLine("No data found");
-            }
-        }
-        static void gethistory(History history)
-        {
-            var gethistory = history.GetAll();
-            if (gethistory.Count > 0)
-            {
-                foreach (var data in gethistory)
-                {
-
-                    Console.WriteLine($"start_date: {data.start_date}, empolyee_id: {data.empolyee_id}," +
-                        $" end_date: {data.end_date}, department_id: {data.department_id}" +
-                        $" job_id: {data.end_date}");
-
-                }
-            }
-            else
-            {
-                Console.WriteLine("No data found");
-            }
         }
     }
 }
