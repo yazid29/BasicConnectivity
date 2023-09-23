@@ -66,19 +66,18 @@ namespace BasicConnectivity
         public Job GetById(string id)
         {
             //Id (int) street_address postal_code city stat_province (string) country_id (string/char)
-            // declarasi database
-            DBconnection database = new DBconnection();
-            // declarasi command untuk tempat query SQL
-            using var command = new SqlCommand();
-            var connection = database.getDB();
-            command.Connection = connection;
+            // deklarasi untuk koneksi database
+            using var connectDB = DBconnection.GetDBConnection();
+            using var command = DBconnection.GetDBCommand();
+
+            command.Connection = connectDB;
             // query select semua columns atau atribut sesuai id yang diinginkan
             command.CommandText = $"SELECT * FROM jobs WHERE id= '{id}'";
 
             try
             {
                 // hubungkan database
-                connection.Open();
+                connectDB.Open();
                 // jalankan semua query yang sudah ditulis diatas pada variable command
                 using var reader = command.ExecuteReader();
                 // jika terdapat isinya maka datanya dikembalikan
@@ -92,10 +91,13 @@ namespace BasicConnectivity
                         datae.min_salary = reader.GetInt32(2);
                         datae.max_salary = reader.GetInt32(3);
                     }
+                    reader.Close();
+                    connectDB.Close();
+                    return datae;
                 }
                 // tutup semua koneksi database
                 reader.Close();
-                connection.Close();
+                connectDB.Close();
                 return datae;
             }
             catch (Exception ex)

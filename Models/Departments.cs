@@ -92,6 +92,8 @@ namespace BasicConnectivity
                     {
                         datae.Id = reader.GetInt32(0);
                         datae.Name = reader.GetString(1);
+                        datae.location_id = reader.GetInt32(2);
+                        datae.manager_id = reader.GetInt32(3);
                     }
                 }
                 // tutup semua koneksi database

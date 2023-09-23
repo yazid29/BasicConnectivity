@@ -9,5 +9,11 @@ namespace BasicConnectivity.Views
 {
     public class DepartmentView : GeneralView
     {
+        public string InputId()
+        {
+            Console.Write("Input ID:");
+            var id = Console.ReadLine();
+            return id;
+        }
     }
 }

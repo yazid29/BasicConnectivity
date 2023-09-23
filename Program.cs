@@ -186,17 +186,17 @@ namespace BasicConnectivity
                         departmentsController.GetAllData();
                         break;
                     case "2":
-                        //departmentsView.GetDataId();
+                        departmentsController.GetDataId();
                         break;
                     case "3":
-                        //departmentsView.InsertData();
+                        //departmentsController.InsertData();
                         break;
                     case "4":
-                        //departmentsView.UpdateData();
+                        //departmentsController.UpdateData();
                         break;
 
                     case "5":
-                        //departmentsView.DeleteData();
+                        //departmentsController.DeleteData();
                         break;
                     default:
                         Console.WriteLine("Invalid choice");
@@ -226,7 +226,7 @@ namespace BasicConnectivity
                         jobsController.GetAllData();
                         break;
                     case "2":
-                        //jobsController.GetDataId();
+                        jobsController.GetDataId();
                         break;
                     case "3":
                         //jobsController.InsertData();
@@ -266,7 +266,7 @@ namespace BasicConnectivity
                         employeeController.GetAllData();
                         break;
                     case "2":
-                        //employeeController.GetDataId();
+                        employeeController.GetDataId();
                         break;
                     case "3":
                         //employeeController.InsertData();
@@ -306,7 +306,7 @@ namespace BasicConnectivity
                         historyController.GetAllData();
                         break;
                     case "2":
-                        //historyController.GetDataId();
+                        historyController.GetDataId();
                         break;
                     case "3":
                         //historyController.InsertData();

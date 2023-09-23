@@ -28,5 +28,35 @@ namespace BasicConnectivity.Controllers
                 _jobView.List(results, "Job");
             }
         }
+        public void GetDataId()
+        {
+            string input = "";
+            bool isTrue = true;
+            while (isTrue)
+            {
+                try
+                {
+                    input = _jobView.inputId();
+                    if (string.IsNullOrEmpty(input))
+                    {
+                        Console.WriteLine("cannot be empty");
+                        continue;
+                    }
+                    if(input.Length > 2)
+                    {
+                        Console.WriteLine("Max input 2 character");
+                        continue;
+                    }
+                    isTrue = false;
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                }
+            }
+            var status = _job.GetById(input);
+            Console.WriteLine(status.title==null);
+            _jobView.Single(status,"Job");
+        }
     }
 }

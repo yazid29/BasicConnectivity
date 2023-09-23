@@ -9,5 +9,11 @@ namespace BasicConnectivity.Views
 {
     internal class HistoryView :GeneralView
     {
+        public string InputUser(string str)
+        {
+            Console.Write($"Input {str}:");
+            var id = Console.ReadLine();
+            return id;
+        }
     }
 }

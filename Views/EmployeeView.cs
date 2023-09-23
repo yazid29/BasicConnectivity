@@ -9,5 +9,11 @@ namespace BasicConnectivity.Views
 {
     internal class EmployeeView : GeneralView
     {
+        public string InputId()
+        {
+            Console.Write("Input ID:");
+            var id = Console.ReadLine();
+            return id;
+        }
     }
 }

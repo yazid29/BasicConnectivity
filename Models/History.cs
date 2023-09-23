@@ -77,7 +77,7 @@ namespace BasicConnectivity
             command.Connection = connectDB;
             // query select semua columns atau atribut sesuai id yang diinginkan
             // select * from histories where start_date>2023-09-13 AND employee_id=2
-            command.CommandText = $"SELECT * FROM histories WHERE start_date > @start_date AND employee_id= @id";
+            command.CommandText = $"SELECT * FROM histories WHERE start_date = @start_date AND employee_id= @id";
 
             try
             {

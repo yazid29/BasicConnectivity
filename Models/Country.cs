@@ -137,6 +137,10 @@ namespace BasicConnectivity
                         datae.Name = reader.GetString(1);
                         datae.Region_id = reader.GetInt32(2);
                     }
+                    // tutup semua koneksi database
+                    reader.Close();
+                    connectDB.Close();
+                    return datae;
                 }
                 // tutup semua koneksi database
                 reader.Close();

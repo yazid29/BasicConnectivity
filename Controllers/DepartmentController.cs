@@ -29,5 +29,34 @@ namespace BasicConnectivity.Controllers
                 _departmentView.List(results, "Department");
             }
         }
+        public void GetDataId()
+        {
+            string input = "";
+            var isTrue = true;
+            while (isTrue)
+            {
+                try
+                {
+                    input = _departmentView.InputId();
+                    if (string.IsNullOrEmpty(input))
+                    {
+                        Console.WriteLine("cannot be empty");
+                        continue;
+                    }
+                    if(!int.TryParse(input, out int id))
+                    {
+                        Console.WriteLine("Must be integer");
+                        continue;
+                    }
+                    isTrue = false;
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                }
+            }
+            var status = _departments.GetById(Convert.ToInt32(input));
+            _departmentView.Single(status,"Departments");
+        }
     }
 }
