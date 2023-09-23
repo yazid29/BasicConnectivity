@@ -123,5 +123,15 @@ namespace BasicConnectivity.Controllers
             var status = _departments.Insert(id,name,location_id,manager_id);
             _departmentView.Transaction(status);
         }
+        public void UpdateData()
+        {
+            var result = _departments.Update(2, "Yahya");
+            _departmentView.Transaction(result);
+        }
+        public void DeleteData()
+        {
+            var result = _departments.Delete(13);
+            _departmentView.Transaction(result);
+        }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Xml.Linq;
 
 namespace BasicConnectivity
 {
@@ -69,7 +70,6 @@ namespace BasicConnectivity
         {
             //Id (int) street_address postal_code city stat_province (string) country_id (string/char)
             // declarasi database
-            var departments = new List<Departments>();
             // deklarasi untuk koneksi database
             using var connectDB = DBconnection.GetDBConnection();
             using var command = DBconnection.GetDBCommand();
@@ -110,7 +110,6 @@ namespace BasicConnectivity
         public string Insert(int id, string title, int location_id, int manager_id)
         {
             // declarasi database
-            var departments = new List<Departments>();
             // deklarasi untuk koneksi database
             using var connectDB = DBconnection.GetDBConnection();
             using var command = DBconnection.GetDBCommand();
@@ -120,10 +119,10 @@ namespace BasicConnectivity
 
             try
             {
-                command.Parameters.Add(new SqlParameter("@id", id));
-                command.Parameters.Add(new SqlParameter("@title", title));
-                command.Parameters.Add(new SqlParameter("@location_id", location_id));
-                command.Parameters.Add(new SqlParameter("@manager_id", manager_id));
+                command.Parameters.Add(DBconnection.SetParameterQ("@id", id));
+                command.Parameters.Add(DBconnection.SetParameterQ("@title", title));
+                command.Parameters.Add(DBconnection.SetParameterQ("@location_id", location_id));
+                command.Parameters.Add(DBconnection.SetParameterQ("@manager_id", manager_id));
 
                 connectDB.Open();
                 using var transaction = connectDB.BeginTransaction();
@@ -151,7 +150,6 @@ namespace BasicConnectivity
         public string Update(int id, string title)
         {
             // declarasi database
-            var departments = new List<Departments>();
             // deklarasi untuk koneksi database
             using var connectDB = DBconnection.GetDBConnection();
             using var command = DBconnection.GetDBCommand();
@@ -165,8 +163,8 @@ namespace BasicConnectivity
 
                 // tentukan data yang ingin dimasukan kedalam database,
                 // dengan mengisi setiap parameter yang ditentukan pada commandText yang ditandai dengan simbol @
-                command.Parameters.Add(new SqlParameter("@id", id));
-                command.Parameters.Add(new SqlParameter("@title", title));
+                command.Parameters.Add(DBconnection.SetParameterQ("@id", id));
+                command.Parameters.Add(DBconnection.SetParameterQ("@title", title));
 
                 // hubungkan database
                 connectDB.Open();
@@ -204,7 +202,6 @@ namespace BasicConnectivity
         public string Delete(int id)
         {
             // declarasi database
-            var departments = new List<Departments>();
             // deklarasi untuk koneksi database
             using var connectDB = DBconnection.GetDBConnection();
             using var command = DBconnection.GetDBCommand();

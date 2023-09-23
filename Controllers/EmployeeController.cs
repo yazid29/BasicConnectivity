@@ -161,5 +161,15 @@ namespace BasicConnectivity.Controllers
             var status = _employees.Insert(id, first_name, last_name, email, phone_number, hire_date,salary, commision_pct,manager_id);
             _employeeView.Transaction(status);
         }
+        public void UpdateData()
+        {
+            var result = _employees.Update(2,"Yahya");
+            _employeeView.Transaction(result);
+        }
+        public void DeleteData()
+        {
+            var result = _employees.Delete(31);
+            _employeeView.Transaction(result);
+        }
     }
 }

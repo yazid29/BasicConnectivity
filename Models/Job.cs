@@ -113,14 +113,14 @@ namespace BasicConnectivity
             using var command = DBconnection.GetDBCommand();
 
             command.Connection = connectDB;
-            command.CommandText = "INSERT INTO jobs VALUES (@id,@title,@min_salary,@max_salary);";
+            command.CommandText = "INSERT INTO jobs VALUES (@id,@title,@min_salary,@max_salary)";
 
             try
             {
-                command.Parameters.Add(new SqlParameter("@id", id));
-                command.Parameters.Add(new SqlParameter("@title", title));
-                command.Parameters.Add(new SqlParameter("@min_salary", min_salary));
-                command.Parameters.Add(new SqlParameter("@max_salary", max_salary));
+                command.Parameters.Add(DBconnection.SetParameterQ("@id", id));
+                command.Parameters.Add(DBconnection.SetParameterQ("@title", title));
+                command.Parameters.Add(DBconnection.SetParameterQ("@min_salary", min_salary));
+                command.Parameters.Add(DBconnection.SetParameterQ("@max_salary", max_salary));
 
                 connectDB.Open();
                 using var transaction = connectDB.BeginTransaction();
@@ -161,8 +161,8 @@ namespace BasicConnectivity
 
                 // tentukan data yang ingin dimasukan kedalam database,
                 // dengan mengisi setiap parameter yang ditentukan pada commandText yang ditandai dengan simbol @
-                command.Parameters.Add(new SqlParameter("@id", id));
-                command.Parameters.Add(new SqlParameter("@title", title));
+                command.Parameters.Add(DBconnection.SetParameterQ("@id", id));
+                command.Parameters.Add(DBconnection.SetParameterQ("@title", title));
 
                 // hubungkan database
                 connectDB.Open();

@@ -192,11 +192,11 @@ namespace BasicConnectivity
                         jobsController.InsertData();
                         break;
                     case "4":
-                        //jobsController.UpdateData();
+                        jobsController.UpdateData();
                         break;
 
                     case "5":
-                        //jobsController.DeleteData();
+                        jobsController.DeleteData();
                         break;
                     default:
                         Console.WriteLine("Invalid choice");
@@ -232,11 +232,11 @@ namespace BasicConnectivity
                         departmentsController.InsertData();
                         break;
                     case "4":
-                        //departmentsController.UpdateData();
+                        departmentsController.UpdateData();
                         break;
 
                     case "5":
-                        //departmentsController.DeleteData();
+                        departmentsController.DeleteData();
                         break;
                     default:
                         Console.WriteLine("Invalid choice");
@@ -270,14 +270,14 @@ namespace BasicConnectivity
                         employeeController.GetDataId();
                         break;
                     case "3":
-                        //employeeController.InsertData();
+                        employeeController.InsertData();
                         break;
                     case "4":
-                        //employeeController.UpdateData();
+                        employeeController.UpdateData();
                         break;
 
                     case "5":
-                        //employeeController.DeleteData();
+                        employeeController.DeleteData();
                         break;
                     default:
                         Console.WriteLine("Invalid choice");
@@ -310,14 +310,14 @@ namespace BasicConnectivity
                         historyController.GetDataId();
                         break;
                     case "3":
-                        //historyController.InsertData();
+                        historyController.InsertData();
                         break;
                     case "4":
-                        //historyController.UpdateData();
+                        historyController.UpdateData();
                         break;
 
                     case "5":
-                        //historyController.DeleteData();
+                        historyController.DeleteData();
                         break;
                     default:
                         Console.WriteLine("Invalid choice");

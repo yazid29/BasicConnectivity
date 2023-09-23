@@ -67,8 +67,6 @@ namespace BasicConnectivity
         // masukan data ke dalam tabel Country
         public string Insert(string id, string name, int regionid)
         {
-            //declarasi sebuah daftar datacountry, dan SqlCommand untuk menampung daftar query
-            var country = new List<Country>();
             // deklarasi untuk koneksi database
             using var connectDB = DBconnection.GetDBConnection();
             using var command = DBconnection.GetDBCommand();
@@ -78,9 +76,9 @@ namespace BasicConnectivity
 
             try
             {
-                command.Parameters.Add(new SqlParameter("@id", id));
-                command.Parameters.Add(new SqlParameter("@name", name));
-                command.Parameters.Add(new SqlParameter("@regionid", regionid));
+                command.Parameters.Add(DBconnection.SetParameterQ("@id", id));
+                command.Parameters.Add(DBconnection.SetParameterQ("@name", name));
+                command.Parameters.Add(DBconnection.SetParameterQ("@regionid", regionid));
 
                 connectDB.Open();
                 using var transaction = connectDB.BeginTransaction();
@@ -111,8 +109,6 @@ namespace BasicConnectivity
         // menampilkan data sesuai dengan id yang di inginkan
         public Country GetById(string id)
         {
-            //declarasi sebuah daftar datacountry, dan SqlCommand untuk menampung daftar query
-            var country = new List<Country>();
             // deklarasi untuk koneksi database
             using var connectDB = DBconnection.GetDBConnection();
             using var command = DBconnection.GetDBCommand();
@@ -156,8 +152,6 @@ namespace BasicConnectivity
         // UPDATE: Country
         public string Update(string id, string name)
         {
-            //declarasi sebuah daftar datacountry, dan SqlCommand untuk menampung daftar query
-            var country = new List<Country>();
             // deklarasi untuk koneksi database
             using var connectDB = DBconnection.GetDBConnection();
             using var command = DBconnection.GetDBCommand();
@@ -171,17 +165,8 @@ namespace BasicConnectivity
 
                 // tentukan data yang ingin dimasukan kedalam database,
                 // dengan mengisi setiap parameter yang ditentukan pada commandText yang ditandai dengan simbol @
-                var pName = new SqlParameter();
-                pName.ParameterName = "@name";
-                pName.Value = name;
-                pName.SqlDbType = SqlDbType.VarChar;
-                command.Parameters.Add(pName);
-
-                var pId = new SqlParameter();
-                pId.ParameterName = "@id";
-                pId.Value = id;
-                pId.SqlDbType = SqlDbType.Char;
-                command.Parameters.Add(pId);
+                command.Parameters.Add(DBconnection.SetParameterQ("@id", id));
+                command.Parameters.Add(DBconnection.SetParameterQ("@name", name));
 
                 // hubungkan database
                 connectDB.Open();

@@ -1,4 +1,5 @@
-﻿using BasicConnectivity.Views;
+﻿using BasicConnectivity.ViewModels;
+using BasicConnectivity.Views;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -108,6 +109,15 @@ namespace BasicConnectivity.Controllers
             }
             var status = _job.Insert(id,title,Convert.ToInt32(min_salary), Convert.ToInt32(max_salary));
             _jobView.Transaction(status);
+        }
+        public void UpdateData()
+        {
+            var result = _job.Update("ad", "analis data");
+            _jobView.Transaction(result);
+        }
+        public void DeleteData()
+        {
+            
         }
     }
 }

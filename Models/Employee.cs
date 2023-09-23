@@ -137,16 +137,16 @@ namespace BasicConnectivity
 
             try
             {
-                command.Parameters.Add(new SqlParameter("@id", id));
-                command.Parameters.Add(new SqlParameter("@first_name", first_name));
-                command.Parameters.Add(new SqlParameter("@last_name", last_name));
-                command.Parameters.Add(new SqlParameter("@email", email));
-                command.Parameters.Add(new SqlParameter("@phone_number", phone_number));
-                command.Parameters.Add(new SqlParameter("@hire_date", hire_date));
-                command.Parameters.Add(new SqlParameter("@salary", salary));
-                command.Parameters.Add(new SqlParameter("@commision_pct", commision_pct));
-                command.Parameters.Add(new SqlParameter("@manager_id", manager_id));
-
+                command.Parameters.Add(DBconnection.SetParameterQ("@id", id));
+                command.Parameters.Add(DBconnection.SetParameterQ("@first_name", first_name));
+                command.Parameters.Add(DBconnection.SetParameterQ("@last_name", last_name));
+                command.Parameters.Add(DBconnection.SetParameterQ("@email", email));
+                command.Parameters.Add(DBconnection.SetParameterQ("@phone_number", phone_number));
+                command.Parameters.Add(DBconnection.SetParameterQ("@hire_date", hire_date));
+                command.Parameters.Add(DBconnection.SetParameterQ("@salary", salary));
+                command.Parameters.Add(DBconnection.SetParameterQ("@commision_pct", commision_pct));
+                command.Parameters.Add(DBconnection.SetParameterQ("@manager_id", manager_id));
+                
                 connectDB.Open();
                 using var transaction = connectDB.BeginTransaction();
                 try
@@ -185,8 +185,8 @@ namespace BasicConnectivity
 
                 // tentukan data yang ingin dimasukan kedalam database,
                 // dengan mengisi setiap parameter yang ditentukan pada commandText yang ditandai dengan simbol @
-                command.Parameters.Add(new SqlParameter("@id", id));
-                command.Parameters.Add(new SqlParameter("@fname", fname));
+                command.Parameters.Add(DBconnection.SetParameterQ("@id", id));
+                command.Parameters.Add(DBconnection.SetParameterQ("@fname", fname));
 
                 // hubungkan database
                 connectDB.Open();

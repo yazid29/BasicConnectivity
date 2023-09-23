@@ -81,8 +81,8 @@ namespace BasicConnectivity
 
             try
             {
-                command.Parameters.Add(new SqlParameter("@start_date", start_date));
-                command.Parameters.Add(new SqlParameter("@id", id));
+                command.Parameters.Add(DBconnection.SetParameterQ("@start_date", start_date));
+                command.Parameters.Add(DBconnection.SetParameterQ("@id", id));
                 // hubungkan database
                 connectDB.Open();
                 // jalankan semua query yang sudah ditulis diatas pada variable command
@@ -124,12 +124,11 @@ namespace BasicConnectivity
 
             try
             {
-
-                command.Parameters.Add(new SqlParameter("@start_date", start_date1));
-                command.Parameters.Add(new SqlParameter("@employee_id", employee_id1));
-                command.Parameters.Add(new SqlParameter("@end_date", end_date1));
-                command.Parameters.Add(new SqlParameter("@department_id", department_id1));
-                command.Parameters.Add(new SqlParameter("@job_id", job_id1));
+                command.Parameters.Add(DBconnection.SetParameterQ("@start_date", start_date1));
+                command.Parameters.Add(DBconnection.SetParameterQ("@employee_id", employee_id1));
+                command.Parameters.Add(DBconnection.SetParameterQ("@end_date", end_date1));
+                command.Parameters.Add(DBconnection.SetParameterQ("@department_id", department_id1));
+                command.Parameters.Add(DBconnection.SetParameterQ("@job_id", job_id1));
 
                 connectDB.Open();
                 using var transaction = connectDB.BeginTransaction();
@@ -170,9 +169,10 @@ namespace BasicConnectivity
 
                 // tentukan data yang ingin dimasukan kedalam database,
                 // dengan mengisi setiap parameter yang ditentukan pada commandText yang ditandai dengan simbol @
-                command.Parameters.Add(new SqlParameter("@employee_id1", employee_id1));
-                command.Parameters.Add(new SqlParameter("@start_date", start_date1));
-                command.Parameters.Add(new SqlParameter("@department_id", departments_id));
+                command.Parameters.Add(DBconnection.SetParameterQ("@employee_id1", employee_id1));
+                command.Parameters.Add(DBconnection.SetParameterQ("@start_date", start_date));
+                command.Parameters.Add(DBconnection.SetParameterQ("@department_id", department_id));
+
                 // hubungkan database
                 connection.Open();
                 // begintransaction digunakan jika dalam method ini melakukan pembaruhan atau perubahan dalam database
@@ -218,9 +218,8 @@ namespace BasicConnectivity
 
             try
             {
-                command.Parameters.Add(new SqlParameter("@start_date", start_date1));
-                command.Parameters.Add(new SqlParameter("@employee_id", employee_id1));
-
+                command.Parameters.Add(DBconnection.SetParameterQ("@start_date", start_date1));
+                command.Parameters.Add(DBconnection.SetParameterQ("@employee_id", employee_id1));
                 connectDB.Open();
                 // begintransaction digunakan jika dalam method ini melakukan pembaruhan atau perubahan dalam database
                 // dan bisa disebut juga sebagai bukti transaksi database tersebut berhasil atau tidak, sebelum data dalam database diubah

@@ -74,7 +74,6 @@ namespace BasicConnectivity
         {
             //Id (int) street_address postal_code city stat_province (string) country_id (string/char)
             // declarasi database
-            var location = new List<Location>();
             // deklarasi untuk koneksi database
             using var connectDB = DBconnection.GetDBConnection();
             using var command = DBconnection.GetDBCommand();
@@ -117,7 +116,6 @@ namespace BasicConnectivity
         {
             //Id (int) street_address postal_code city stat_province (string) country_id (string/char)
             // declarasi database
-            var location = new List<Location>();
             // deklarasi untuk koneksi database
             using var connectDB = DBconnection.GetDBConnection();
             using var command = DBconnection.GetDBCommand();
@@ -128,12 +126,12 @@ namespace BasicConnectivity
 
             try
             {
-                command.Parameters.Add(new SqlParameter("@id", id));
-                command.Parameters.Add(new SqlParameter("@street_address", street_address));
-                command.Parameters.Add(new SqlParameter("@postal_code", postal_code));
-                command.Parameters.Add(new SqlParameter("@city", city));
-                command.Parameters.Add(new SqlParameter("@state_province", state_province));
-                command.Parameters.Add(new SqlParameter("@country_id", country_id));
+                command.Parameters.Add(DBconnection.SetParameterQ("@id", id));
+                command.Parameters.Add(DBconnection.SetParameterQ("@street_address", street_address));
+                command.Parameters.Add(DBconnection.SetParameterQ("@postal_code", postal_code));
+                command.Parameters.Add(DBconnection.SetParameterQ("@city", city));
+                command.Parameters.Add(DBconnection.SetParameterQ("@state_province", state_province));
+                command.Parameters.Add(DBconnection.SetParameterQ("@country_id", country_id));
 
                 connectDB.Open();
                 using var transaction = connectDB.BeginTransaction();
@@ -161,7 +159,6 @@ namespace BasicConnectivity
         public string Update(int id, string street_address, string postal_code)
         {
             // declarasi database
-            var location = new List<Location>();
             // deklarasi untuk koneksi database
             using var connectDB = DBconnection.GetDBConnection();
             using var command = DBconnection.GetDBCommand();
@@ -175,9 +172,9 @@ namespace BasicConnectivity
 
                 // tentukan data yang ingin dimasukan kedalam database,
                 // dengan mengisi setiap parameter yang ditentukan pada commandText yang ditandai dengan simbol @
-                command.Parameters.Add(new SqlParameter("@id", id));
-                command.Parameters.Add(new SqlParameter("@street_address", street_address));
-                command.Parameters.Add(new SqlParameter("@postal_code", postal_code));
+                command.Parameters.Add(DBconnection.SetParameterQ("@id", id));
+                command.Parameters.Add(DBconnection.SetParameterQ("@street_address", street_address));
+                command.Parameters.Add(DBconnection.SetParameterQ("@postal_code", postal_code));
 
                 // hubungkan database
                 connectDB.Open();
@@ -216,7 +213,6 @@ namespace BasicConnectivity
         public string Delete(int id)
         {
             // declarasi database
-            var location = new List<Location>();
             // deklarasi untuk koneksi database
             using var connectDB = DBconnection.GetDBConnection();
             using var command = DBconnection.GetDBCommand();

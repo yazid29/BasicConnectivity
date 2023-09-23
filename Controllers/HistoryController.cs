@@ -1,4 +1,5 @@
-﻿using BasicConnectivity.Views;
+﻿using BasicConnectivity.ViewModels;
+using BasicConnectivity.Views;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -172,5 +173,17 @@ namespace BasicConnectivity.Controllers
             var status = _history.Insert(start_date,employee_id,end_date,department_id,job_id);
             _historyView.Transaction(status);
         }
+        public void UpdateData()
+        {
+            //DateTime start_date1, int employee_id1, int departments_id
+            var result = _history.Update(new DateTime(2023,9,20), 3, 1);
+            _historyView.Transaction(result);
+        }
+        public void DeleteData()
+        {
+            var result = _history.Delete(new DateTime(2023, 9, 20), 3);
+            _historyView.Single(result, "History");
+        }
     }
+    
 }
