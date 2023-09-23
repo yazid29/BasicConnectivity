@@ -11,7 +11,13 @@ namespace BasicConnectivity.Views
     {
         public string inputId()
         {
-            Console.Write("Input ID:");
+            Console.Write("Input ID: ");
+            var id = Console.ReadLine();
+            return id;
+        }
+        public string inputUser(string str)
+        {
+            Console.Write($"Input {str}: ");
             var id = Console.ReadLine();
             return id;
         }

@@ -164,46 +164,6 @@ namespace BasicConnectivity
                 }
             }
         }
-        public static void DepartmentMenu()
-        {
-            var departments = new Departments();
-            var departmentsView = new DepartmentView();
-
-            var departmentsController = new DepartmentController(departments, departmentsView);
-
-            var isLoop = true;
-            while (isLoop)
-            {
-                subMenu("Department");
-                Console.Write("Enter your choice: ");
-                var input2 = Console.ReadLine();
-                switch (input2)
-                {
-                    case "0":
-                        isLoop = false;
-                        break;
-                    case "1":
-                        departmentsController.GetAllData();
-                        break;
-                    case "2":
-                        departmentsController.GetDataId();
-                        break;
-                    case "3":
-                        //departmentsController.InsertData();
-                        break;
-                    case "4":
-                        //departmentsController.UpdateData();
-                        break;
-
-                    case "5":
-                        //departmentsController.DeleteData();
-                        break;
-                    default:
-                        Console.WriteLine("Invalid choice");
-                        break;
-                }
-            }
-        }
         public static void JobMenu()
         {
             var jobs = new Job();
@@ -229,7 +189,7 @@ namespace BasicConnectivity
                         jobsController.GetDataId();
                         break;
                     case "3":
-                        //jobsController.InsertData();
+                        jobsController.InsertData();
                         break;
                     case "4":
                         //jobsController.UpdateData();
@@ -244,6 +204,47 @@ namespace BasicConnectivity
                 }
             }
         }
+        public static void DepartmentMenu()
+        {
+            var departments = new Departments();
+            var departmentsView = new DepartmentView();
+
+            var departmentsController = new DepartmentController(departments, departmentsView);
+
+            var isLoop = true;
+            while (isLoop)
+            {
+                subMenu("Department");
+                Console.Write("Enter your choice: ");
+                var input2 = Console.ReadLine();
+                switch (input2)
+                {
+                    case "0":
+                        isLoop = false;
+                        break;
+                    case "1":
+                        departmentsController.GetAllData();
+                        break;
+                    case "2":
+                        departmentsController.GetDataId();
+                        break;
+                    case "3":
+                        departmentsController.InsertData();
+                        break;
+                    case "4":
+                        //departmentsController.UpdateData();
+                        break;
+
+                    case "5":
+                        //departmentsController.DeleteData();
+                        break;
+                    default:
+                        Console.WriteLine("Invalid choice");
+                        break;
+                }
+            }
+        }
+        
         public static void EmployeeMenu()
         {
             var employees = new Employee();
